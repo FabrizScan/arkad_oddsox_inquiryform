@@ -1,0 +1,24 @@
+:root {
+  /* Primary brand colors */
+  --color-primary: #1a1a1a;
+  --color-accent: #e6b800;
+  --color-bg: #fff;
+  --color-bg-alt: #f7f7f7;
+  --color-border: #e0e0e0;
+  --color-error: #d7263d;
+
+  /* Typography */
+  --font-main: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-sm: 0.95rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3rem;
+
+  /* Border radius */
+  --radius: 10px;
+} 

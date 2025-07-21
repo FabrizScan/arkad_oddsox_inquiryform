@@ -1,0 +1,22 @@
+{
+  "name": "20250705-oddsox-leads-form-draft-",
+  "version": "1.0.0",
+  "description": "This project is a modern, elegant multi-step online form for collecting detailed event booking information for a music band, inspired by the style of [theoddsoxinternational.com](https://www.theoddsoxinternational.com/).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lucide-react": "^0.525.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^4.4.9"
+  }
+}
