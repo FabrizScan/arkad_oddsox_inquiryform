@@ -5,6 +5,7 @@ import Step3Guests from "./components/Step3Guests"; // Nuovo Step 3
 import Step4MusicDetails from "./components/Step4MusicDetails"; // Nuovo Step 4
 import Step5ContactNotes from "./components/Step5ContactNotes"; // Nuovo Step 5
 import Stepper from "./components/Stepper";
+import { Music, Calendar, MapPin, Users, MessageCircle } from "lucide-react";
 import "./styles/main.css";
 
 // --- SOLO PER DEMO LOCALE! ---
@@ -86,6 +87,7 @@ export default function App() {
   // Adatta i dati del form per la tabella Supabase
   function mapFormDataToPayload(formData) {
     return {
+      user_type: formData.userType,
       event_type: formData.eventType === "other" ? formData.otherEventType : formData.eventType,
       date_type: formData.isDateRange ? "range" : "single",
       start_date: formData.startDate,
@@ -219,7 +221,7 @@ export default function App() {
   };
 
   return (
-    <div className={`form-container ${submitted ? "submitted" : ""}`}>
+    <div className={`page-container ${submitted ? "submitted" : ""}`}>
       {submitted ? (
         <div className="submission-success">
           <h2>Thank You!</h2>
@@ -238,8 +240,34 @@ export default function App() {
         </div>
       ) : (
         <>
-          <Stepper steps={steps} currentStep={currentStep} />
-          {renderStep()}
+          {/* Page Header Content */}
+          <div className="page-header">
+            <div className="brand-header">
+              <div className="brand-main">
+                <span className="brand-prefix">the</span>
+                <span className="brand-name">Odd Sox</span>
+              </div>
+              <span className="brand-suffix">INTERNATIONAL</span>
+            </div>
+            <div className="header-icons">
+              <Music className="header-icon" />
+              <Calendar className="header-icon" />
+              <MapPin className="header-icon" />
+            </div>
+            <h1 className="page-title">
+              <span className="title-main">Interactive</span>
+              <span className="title-accent">Booking</span>
+            </h1>
+            <p className="page-description">
+              Let's create the perfect musical experience for your special day. Our step-by-step form helps us understand your vision and provide a personalized quote.
+            </p>
+          </div>
+
+          {/* Form Container */}
+          <div className="form-container">
+            <Stepper steps={steps} currentStep={currentStep} />
+            {renderStep()}
+          </div>
         </>
       )}
     </div>

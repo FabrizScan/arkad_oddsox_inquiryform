@@ -71,26 +71,26 @@ export default function Step3Guests({ data, onNext, onBack, onUpdate }) {
           <input
             type="radio"
             name="guests"
-            value="Large (101-200)"
-            checked={fields.guests === "Large (101-200)"}
+            value="Large (101-150)"
+            checked={fields.guests === "Large (101-150)"}
             onChange={handleRadioChange}
           />
           <div>
             <strong>Large</strong>
-            <span>(101-200)</span>
+            <span>(101-150)</span>
           </div>
         </label>
         <label className="radio-card">
           <input
             type="radio"
             name="guests"
-            value="Very Large (200+)"
-            checked={fields.guests === "Very Large (200+)"}
+            value="Very Large (Above 150)"
+            checked={fields.guests === "Very Large (Above 150)"}
             onChange={handleRadioChange}
           />
           <div>
             <strong>Very Large</strong>
-            <span>(200+)</span>
+            <span>(Above 150)</span>
           </div>
         </label>
       </div>

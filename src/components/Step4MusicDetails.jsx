@@ -53,7 +53,7 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
         <p>
           Our standard band setup includes:
           <br />
-          <strong>Vocals, Guitar, Bass, Drums, and Keyboards.</strong>
+          <strong>Guitars, Double Bass, and Percussion, with all members contributing vocals.</strong>
           <br />
           This configuration provides a full, dynamic sound perfect for most events.
         </p>

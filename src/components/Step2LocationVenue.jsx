@@ -64,8 +64,8 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       <label>
         Setting <span className="required">*</span>
       </label>
-      <div className="radio-group">
-        <label>
+      <div className="radio-grid">
+        <label className="radio-card">
           <input
             type="radio"
             name="indoorOutdoor"
@@ -73,9 +73,12 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
             checked={fields.indoorOutdoor === "Indoor"}
             onChange={handleChange}
           />
-          Indoor
+          <div>
+            <strong>Indoor</strong>
+            <span>Inside venue or building</span>
+          </div>
         </label>
-        <label>
+        <label className="radio-card">
           <input
             type="radio"
             name="indoorOutdoor"
@@ -83,9 +86,12 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
             checked={fields.indoorOutdoor === "Outdoor"}
             onChange={handleChange}
           />
-          Outdoor
+          <div>
+            <strong>Outdoor</strong>
+            <span>Outside venue or garden</span>
+          </div>
         </label>
-        <label>
+        <label className="radio-card">
           <input
             type="radio"
             name="indoorOutdoor"
@@ -93,7 +99,10 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
             checked={fields.indoorOutdoor === "Both"}
             onChange={handleChange}
           />
-          Both
+          <div>
+            <strong>Both</strong>
+            <span>Combination of indoor and outdoor</span>
+          </div>
         </label>
       </div>
       {errors.indoorOutdoor && (

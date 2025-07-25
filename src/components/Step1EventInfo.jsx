@@ -8,6 +8,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
     startDate: data.startDate || "",
     endDate: data.endDate || "",
     isDateRange: data.isDateRange || false,
+    userType: data.userType || "",
   });
   const [errors, setErrors] = useState({});
 
@@ -19,6 +20,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
       startDate: data.startDate || "",
       endDate: data.endDate || "",
       isDateRange: data.isDateRange || false,
+      userType: data.userType || "",
     });
   }, [data]);
 
@@ -53,6 +55,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
     if (!fields.startDate) e.startDate = "Required";
     else if (new Date(fields.startDate) < new Date(todayISO))
       e.startDate = "Date cannot be in the past";
+    if (!fields.userType) e.userType = "Required";
 
     if (fields.isDateRange) {
       if (!fields.endDate) e.endDate = "Required for date range";
@@ -79,6 +82,40 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
         <h2 className="section-title">Tell us about your event</h2>
         <p className="section-subtitle">What type of celebration are you planning?</p>
       </div>
+
+      {/* User Type */}
+      <label>
+        Are you booking for? <span className="required">*</span>
+      </label>
+      <div className="radio-grid">
+        <label className="radio-card">
+          <input
+            type="radio"
+            name="userType"
+            value="private"
+            checked={fields.userType === "private"}
+            onChange={handleRadioChange}
+          />
+          <div>
+            <strong>Private</strong>
+            <span>Own wedding, birthday, private event</span>
+          </div>
+        </label>
+        <label className="radio-card">
+          <input
+            type="radio"
+            name="userType"
+            value="professional"
+            checked={fields.userType === "professional"}
+            onChange={handleRadioChange}
+          />
+          <div>
+            <strong>Professional</strong>
+            <span>PR, wedding planner, etc.</span>
+          </div>
+        </label>
+      </div>
+      {errors.userType && <div className="error">{errors.userType}</div>}
 
       {/* Event Type */}
       <label>
