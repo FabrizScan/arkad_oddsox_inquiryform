@@ -107,10 +107,26 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       };
       
       setPlaceData(placeInfo);
-      // Display in format: "name, address"
-      const displayValue = placeInfo.name && placeInfo.formatted_address 
-        ? `${placeInfo.name}, ${placeInfo.formatted_address}`
-        : placeInfo.formatted_address || placeInfo.name || "";
+      // Display in format: "name, address" with duplicate removal
+      let displayValue = "";
+      if (placeInfo.name && placeInfo.formatted_address) {
+        // Check if name appears at the beginning of the address
+        const nameLower = placeInfo.name.toLowerCase().trim();
+        const addressLower = placeInfo.formatted_address.toLowerCase().trim();
+        
+        if (addressLower.startsWith(nameLower + ',') || addressLower.startsWith(nameLower + ' ')) {
+          // Remove the duplicate name from the beginning of the address
+          const addressWithoutName = placeInfo.formatted_address.substring(placeInfo.name.length).trim();
+          // Remove leading comma and space if present
+          const cleanAddress = addressWithoutName.replace(/^[,\s]+/, '');
+          displayValue = `${placeInfo.name}, ${cleanAddress}`;
+        } else {
+          // No duplication, use original format
+          displayValue = `${placeInfo.name}, ${placeInfo.formatted_address}`;
+        }
+      } else {
+        displayValue = placeInfo.formatted_address || placeInfo.name || "";
+      }
       setLocationValue(displayValue);
       setSuggestions([]);
       setShowSuggestions(false);
@@ -128,10 +144,26 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       };
       
       setPlaceData(placeInfo);
-      // Display in format: "name, address" (fallback)
-      const displayValue = placeInfo.name && placeInfo.formatted_address 
-        ? `${placeInfo.name}, ${placeInfo.formatted_address}`
-        : placeInfo.formatted_address || placeInfo.name || "";
+      // Display in format: "name, address" with duplicate removal (fallback)
+      let displayValue = "";
+      if (placeInfo.name && placeInfo.formatted_address) {
+        // Check if name appears at the beginning of the address
+        const nameLower = placeInfo.name.toLowerCase().trim();
+        const addressLower = placeInfo.formatted_address.toLowerCase().trim();
+        
+        if (addressLower.startsWith(nameLower + ',') || addressLower.startsWith(nameLower + ' ')) {
+          // Remove the duplicate name from the beginning of the address
+          const addressWithoutName = placeInfo.formatted_address.substring(placeInfo.name.length).trim();
+          // Remove leading comma and space if present
+          const cleanAddress = addressWithoutName.replace(/^[,\s]+/, '');
+          displayValue = `${placeInfo.name}, ${cleanAddress}`;
+        } else {
+          // No duplication, use original format
+          displayValue = `${placeInfo.name}, ${placeInfo.formatted_address}`;
+        }
+      } else {
+        displayValue = placeInfo.formatted_address || placeInfo.name || "";
+      }
       setLocationValue(displayValue);
       setSuggestions([]);
       setShowSuggestions(false);
