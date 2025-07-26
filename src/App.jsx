@@ -92,7 +92,7 @@ export default function App() {
       date_type: formData.isDateRange ? "range" : "single",
       start_date: formData.startDate,
       end_date: formData.isDateRange ? formData.endDate : null,
-      // Combine venue and location for Supabase
+      // Combine venue and location for Supabase (NOTE: venue field is no longer in Step2LocationVenue.jsx)
       location: formData.venue && formData.location ? `${formData.venue}, ${formData.location}` : (formData.location || formData.venue || ""),
       indoor_outdoor: formData.indoorOutdoor,
       guests: formData.guests,
@@ -104,6 +104,12 @@ export default function App() {
       email: formData.email,
       phone: formData.phone,
       notes: formData.notes,
+      // Google Places data
+      place_id: formData.place_id || null,
+      place_name: formData.place_name || null,
+      place_address: formData.place_address || null,
+      place_lat: formData.place_lat || null,
+      place_lng: formData.place_lng || null,
     };
   }
 
