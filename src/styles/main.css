@@ -139,6 +139,9 @@ body {
   box-shadow: 0 4px 32px rgba(0,0,0,0.08);
   padding: var(--space-lg) var(--space-md);
   transition: box-shadow 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .form-container.submitted {
@@ -240,6 +243,8 @@ input, select, textarea {
   background: #fff;
   transition: border 0.2s;
   font-family: var(--font-body);
+  box-sizing: border-box;
+  max-width: 100%;
 }
 input:focus, select:focus, textarea:focus {
   border-color: var(--odd-sox-orange);
@@ -808,9 +813,12 @@ input[type="radio"] {
   }
 } 
 
-/* Google Places Autocomplete Styles */
+/* Custom suggestions dropdown styles */
 .location-input-container {
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .location-input-container input {
@@ -819,158 +827,21 @@ input[type="radio"] {
   border: 1px solid #e9ecef;
   border-radius: 0.75rem;
   font-size: var(--font-size-base);
-  margin-bottom: var(--space-sm);
+  margin-bottom: 0;
   background: #fff !important;
   transition: border 0.2s;
   font-family: var(--font-body);
   color: var(--odd-sox-dark) !important;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .location-input-container input:focus {
   border-color: var(--odd-sox-orange);
   outline: none;
   box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
-}
-
-.autocomplete-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #e9ecef;
-  border-top: none;
-  border-radius: 0 0 0.75rem 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.suggestion-item {
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  border-bottom: 1px solid #f8f9fa;
-  transition: background-color 0.2s;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-}
-
-.suggestion-item:hover {
-  background-color: var(--odd-sox-cream);
-}
-
-.suggestion-item:last-child {
-  border-bottom: none;
-}
-
-.suggestion-item.selected {
-  background-color: var(--odd-sox-orange);
-  color: white;
-}
-
-.suggestion-item .main-text {
-  font-weight: 500;
-  color: var(--odd-sox-dark);
-}
-
-.suggestion-item .secondary-text {
-  font-size: 0.8rem;
-  color: #6c757d;
-  margin-top: 0.25rem;
-}
-
-.suggestion-item:hover .main-text,
-.suggestion-item:hover .secondary-text,
-.suggestion-item.selected .main-text,
-.suggestion-item.selected .secondary-text {
-  color: inherit;
-} 
-
-/* Mapbox AddressAutofill Styles */
-.mapboxgl-ctrl-geocoder {
-  width: 100% !important;
-  max-width: none !important;
-  font-family: var(--font-body) !important;
-}
-
-.mapboxgl-ctrl-geocoder--input {
-  width: 100% !important;
-  padding: var(--space-xs) !important;
-  border: 1px solid #e9ecef !important;
-  border-radius: 0.75rem !important;
-  font-size: var(--font-size-base) !important;
-  margin-bottom: var(--space-sm) !important;
-  background: #fff !important;
-  transition: border 0.2s !important;
-  font-family: var(--font-body) !important;
-}
-
-.mapboxgl-ctrl-geocoder--input:focus {
-  border-color: var(--odd-sox-orange) !important;
-  outline: none !important;
-  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1) !important;
-}
-
-.mapboxgl-ctrl-geocoder--suggestions {
-  background: white !important;
-  border: 1px solid #e9ecef !important;
-  border-radius: 0.75rem !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-  font-family: var(--font-body) !important;
-}
-
-.mapboxgl-ctrl-geocoder--suggestion {
-  padding: 0.75rem 1rem !important;
-  cursor: pointer !important;
-  border-bottom: 1px solid #f8f9fa !important;
-  transition: background-color 0.2s !important;
-  font-family: var(--font-body) !important;
-  font-size: 0.9rem !important;
-}
-
-.mapboxgl-ctrl-geocoder--suggestion:hover {
-  background-color: var(--odd-sox-cream) !important;
-}
-
-.mapboxgl-ctrl-geocoder--suggestion:last-child {
-  border-bottom: none !important;
-}
-
-.mapboxgl-ctrl-geocoder--suggestion-title {
-  font-weight: 500 !important;
-  color: var(--odd-sox-dark) !important;
-}
-
-.mapboxgl-ctrl-geocoder--suggestion-address {
-  font-size: 0.8rem !important;
-  color: #6c757d !important;
-  margin-top: 0.25rem !important;
-} 
-
-/* Mapbox AddressAutofill styles */
-.mapboxgl-ctrl-address-autofill {
-  position: relative;
-}
-
-.mapboxgl-ctrl-address-autofill input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-}
-
-.mapboxgl-ctrl-address-autofill input:focus {
-  outline: none;
-  border-color: var(--odd-sox-orange);
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
-}
-
-/* Custom suggestions dropdown styles */
-.location-input-container {
-  position: relative;
 }
 
 .suggestions-dropdown {
@@ -982,7 +853,7 @@ input[type="radio"] {
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  z-index: 1000;
+  z-index: 10;
   max-height: 300px;
   overflow-y: auto;
   margin-top: 0.25rem;
@@ -1014,54 +885,4 @@ input[type="radio"] {
   color: #6b7280;
   font-size: 0.875rem;
   line-height: 1.4;
-} 
-
-/* Google Places API (New) Web Component Styles */
-gmp-place-autocomplete {
-  display: block;
-  width: 100%;
-}
-
-gmp-place-autocomplete::part(input) {
-  width: 100%;
-  padding: var(--space-xs);
-  border: 1px solid #e9ecef;
-  border-radius: 0.75rem;
-  font-size: var(--font-size-base);
-  margin-bottom: var(--space-sm);
-  background: #fff !important;
-  transition: border 0.2s;
-  font-family: var(--font-body);
-  color: var(--odd-sox-dark) !important;
-}
-
-gmp-place-autocomplete::part(input):focus {
-  border-color: var(--odd-sox-orange);
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
-}
-
-gmp-place-autocomplete::part(suggestions) {
-  background: white;
-  border: 1px solid #e9ecef;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: var(--font-body);
-}
-
-gmp-place-autocomplete::part(suggestion) {
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  border-bottom: 1px solid #f8f9fa;
-  transition: background-color 0.2s;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-}
-
-gmp-place-autocomplete::part(suggestion):hover {
-  background-color: var(--odd-sox-cream);
-}
-
-gmp-place-autocomplete::part(suggestion):last-child {
-  border-bottom: none;
 } 
