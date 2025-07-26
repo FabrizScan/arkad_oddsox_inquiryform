@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
+import { AddressAutofill } from '@mapbox/search-js-react';
+
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
 export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
   const [fields, setFields] = useState({
@@ -49,16 +52,19 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       {/* Location */}
       <label>
         Location <span className="required">*</span>
-        <input
-          type="text"
-          name="location"
-          value={fields.location}
-          onChange={handleChange}
-          placeholder="e.g., The Grand Hotel, Paris"
-          required
-        />
-        {errors.location && <div className="error">{errors.location}</div>}
+        <AddressAutofill accessToken={MAPBOX_TOKEN}>
+          <input
+            type="text"
+            name="location"
+            value={fields.location}
+            onChange={handleChange}
+            placeholder="e.g., The Grand Hotel, Paris"
+            autoComplete="address-line1"
+            required
+          />
+        </AddressAutofill>
       </label>
+      {errors.location && <div className="error">{errors.location}</div>}
 
       {/* Indoor / Outdoor / Both */}
       <label>
