@@ -92,12 +92,13 @@ export default function App() {
       date_type: formData.isDateRange ? "range" : "single",
       start_date: formData.startDate,
       end_date: formData.isDateRange ? formData.endDate : null,
-      location: formData.location,
+      // Combine venue and location for Supabase
+      location: formData.venue && formData.location ? `${formData.venue}, ${formData.location}` : (formData.location || formData.venue || ""),
       indoor_outdoor: formData.indoorOutdoor,
       guests: formData.guests,
       dress_code: formData.dressCode,
       concert_duration: formData.concertDuration,
-      musicians: formData.musicians || [], // Invia come array, non stringa
+      musicians: formData.musicians || [],
       other_musician: formData.otherMusician,
       full_name: formData.fullName,
       email: formData.email,
