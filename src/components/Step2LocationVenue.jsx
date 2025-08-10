@@ -102,10 +102,10 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       const placeName = placeDetails.displayName?.text || suggestion.text?.text || '';
       const placeAddress = placeDetails.formattedAddress || suggestion.structuredFormat?.secondaryText?.text || '';
 
-      // Combine name and address for the location field
-      const combinedLocation = placeAddress ? `${placeName}, ${placeAddress}` : placeName;
+      // Clean and combine name and address, removing duplicate city names
+      const cleanedLocation = cleanAddress(placeName, placeAddress);
 
-      setLocationValue(combinedLocation);
+      setLocationValue(cleanedLocation);
       setPlaceData({
         place_id: suggestion.placeId,
         name: placeName,
@@ -117,7 +117,7 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       setSuggestions([]);
       setShowSuggestions(false);
 
-      console.log('✅ Location set:', combinedLocation);
+      console.log('✅ Location set:', cleanedLocation);
       console.log('✅ Place data:', {
         place_id: suggestion.placeId,
         name: placeName,
@@ -131,6 +131,35 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       setLocationValue(suggestion.text?.text || suggestion.structuredFormat?.mainText?.text || '');
       setSuggestions([]);
       setShowSuggestions(false);
+    }
+  };
+
+  // Function to clean address and remove duplicate city names
+  const cleanAddress = (placeName, placeAddress) => {
+    if (!placeAddress) return placeName;
+    
+    // Split address into parts
+    const addressParts = placeAddress.split(',').map(part => part.trim());
+    
+    // Extract city from place name (usually the first part)
+    const placeNameParts = placeName.split(',').map(part => part.trim());
+    const cityFromName = placeNameParts[0];
+    
+    // Remove duplicate city from address parts
+    const cleanedAddressParts = addressParts.filter(part => {
+      // Check if this part is similar to the city name
+      const normalizedPart = part.toLowerCase().replace(/[^a-z]/g, '');
+      const normalizedCity = cityFromName.toLowerCase().replace(/[^a-z]/g, '');
+      
+      // If they're very similar (same city), skip this part
+      return normalizedPart !== normalizedCity;
+    });
+    
+    // Combine place name with cleaned address
+    if (cleanedAddressParts.length > 0) {
+      return `${placeName}, ${cleanedAddressParts.join(', ')}`;
+    } else {
+      return placeName;
     }
   };
 
