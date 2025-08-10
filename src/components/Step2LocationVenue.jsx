@@ -33,7 +33,7 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
   const handleInputChange = async (e) => {
     const value = e.target.value;
     setLocationValue(value);
-    
+
     if (value.length > 2 && GOOGLE_MAPS_API_KEY) {
       setIsLoading(true);
       try {
@@ -57,11 +57,11 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
 
         const data = await response.json();
         console.log('✅ Autocomplete response:', data);
-        
+
         const placePredictions = data.suggestions
           ?.filter(suggestion => suggestion.placePrediction)
           ?.map(suggestion => suggestion.placePrediction) || [];
-        
+
         setSuggestions(placePredictions);
         setShowSuggestions(placePredictions.length > 0);
       } catch (error) {
@@ -81,7 +81,7 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
   const handleSelectSuggestion = async (suggestion) => {
     try {
       console.log('Selected suggestion:', suggestion);
-      
+
       // Get place details using the place ID
       const response = await fetch(`https://places.googleapis.com/v1/places/${suggestion.placeId}`, {
         method: 'GET',
@@ -97,74 +97,38 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
 
       const placeDetails = await response.json();
       console.log('✅ Place details:', placeDetails);
-      
-      const placeInfo = {
-        place_id: placeDetails.id || suggestion.placeId,
-        name: placeDetails.displayName?.text || suggestion.structuredFormat?.mainText?.text || "",
-        formatted_address: placeDetails.formattedAddress || suggestion.text?.text || "",
+
+      // Extract the place information
+      const placeName = placeDetails.displayName?.text || suggestion.text?.text || '';
+      const placeAddress = placeDetails.formattedAddress || suggestion.structuredFormat?.secondaryText?.text || '';
+
+      // Combine name and address for the location field
+      const combinedLocation = placeAddress ? `${placeName}, ${placeAddress}` : placeName;
+
+      setLocationValue(combinedLocation);
+      setPlaceData({
+        place_id: suggestion.placeId,
+        name: placeName,
+        formatted_address: placeAddress,
         lat: placeDetails.location?.latitude || null,
         lng: placeDetails.location?.longitude || null
-      };
-      
-      setPlaceData(placeInfo);
-      // Display in format: "name, address" with duplicate removal
-      let displayValue = "";
-      if (placeInfo.name && placeInfo.formatted_address) {
-        // Check if name appears at the beginning of the address
-        const nameLower = placeInfo.name.toLowerCase().trim();
-        const addressLower = placeInfo.formatted_address.toLowerCase().trim();
-        
-        if (addressLower.startsWith(nameLower + ',') || addressLower.startsWith(nameLower + ' ')) {
-          // Remove the duplicate name from the beginning of the address
-          const addressWithoutName = placeInfo.formatted_address.substring(placeInfo.name.length).trim();
-          // Remove leading comma and space if present
-          const cleanAddress = addressWithoutName.replace(/^[,\s]+/, '');
-          displayValue = `${placeInfo.name}, ${cleanAddress}`;
-        } else {
-          // No duplication, use original format
-          displayValue = `${placeInfo.name}, ${placeInfo.formatted_address}`;
-        }
-      } else {
-        displayValue = placeInfo.formatted_address || placeInfo.name || "";
-      }
-      setLocationValue(displayValue);
+      });
+
       setSuggestions([]);
       setShowSuggestions(false);
-      
-      console.log('✅ Final place info:', placeInfo);
+
+      console.log('✅ Location set:', combinedLocation);
+      console.log('✅ Place data:', {
+        place_id: suggestion.placeId,
+        name: placeName,
+        formatted_address: placeAddress,
+        lat: placeDetails.location?.latitude || null,
+        lng: placeDetails.location?.longitude || null
+      });
     } catch (error) {
       console.error('❌ Error getting place details:', error);
-      // Fallback: use suggestion data directly
-      const placeInfo = {
-        place_id: suggestion.placeId || "",
-        name: suggestion.structuredFormat?.mainText?.text || "",
-        formatted_address: suggestion.text?.text || "",
-        lat: null,
-        lng: null
-      };
-      
-      setPlaceData(placeInfo);
-      // Display in format: "name, address" with duplicate removal (fallback)
-      let displayValue = "";
-      if (placeInfo.name && placeInfo.formatted_address) {
-        // Check if name appears at the beginning of the address
-        const nameLower = placeInfo.name.toLowerCase().trim();
-        const addressLower = placeInfo.formatted_address.toLowerCase().trim();
-        
-        if (addressLower.startsWith(nameLower + ',') || addressLower.startsWith(nameLower + ' ')) {
-          // Remove the duplicate name from the beginning of the address
-          const addressWithoutName = placeInfo.formatted_address.substring(placeInfo.name.length).trim();
-          // Remove leading comma and space if present
-          const cleanAddress = addressWithoutName.replace(/^[,\s]+/, '');
-          displayValue = `${placeInfo.name}, ${cleanAddress}`;
-        } else {
-          // No duplication, use original format
-          displayValue = `${placeInfo.name}, ${placeInfo.formatted_address}`;
-        }
-      } else {
-        displayValue = placeInfo.formatted_address || placeInfo.name || "";
-      }
-      setLocationValue(displayValue);
+      // Fallback: just use the suggestion text
+      setLocationValue(suggestion.text?.text || suggestion.structuredFormat?.mainText?.text || '');
       setSuggestions([]);
       setShowSuggestions(false);
     }
@@ -177,7 +141,7 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
 
   function validate() {
     const e = {};
-    if (!locationValue) e.location = "Required";
+    if (!locationValue.trim()) e.location = "Required";
     if (!fields.indoorOutdoor) e.indoorOutdoor = "Required";
     return e;
   }
@@ -187,15 +151,7 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
     const eObj = validate();
     setErrors(eObj);
     if (Object.keys(eObj).length === 0) {
-      onUpdate({
-        location: locationValue,
-        indoorOutdoor: fields.indoorOutdoor,
-        place_id: placeData.place_id,
-        place_name: placeData.name,
-        place_address: placeData.formatted_address,
-        place_lat: placeData.lat,
-        place_lng: placeData.lng
-      });
+      onUpdate({ ...fields, location: locationValue });
       onNext();
     }
   }
@@ -205,67 +161,57 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       <form onSubmit={handleNext}>
         <div className="section-header">
           <MapPin className="section-icon" />
-          <h2 className="section-title">Location</h2>
-          <p className="section-subtitle">Tell us about your venue and location.</p>
         </div>
-        
+
+        {/* Location */}
         <label>
-          Location <span className="required">*</span>
-          <div className="location-input-container">
-            <input
-              ref={locationInputRef}
-              type="text"
-              name="location"
-              placeholder="e.g., The Grand Hotel, Paris"
-              autoComplete="off"
-              required
-              value={locationValue}
-              onChange={handleInputChange}
-              onFocus={() => setShowSuggestions(suggestions.length > 0)}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-              disabled={!GOOGLE_MAPS_API_KEY}
-              style={{
-                width: '100%',
-                padding: '0.75rem 1rem',
-                border: '1px solid #e2e8f0',
-                borderRadius: '0.5rem',
-                fontSize: '1rem',
-                backgroundColor: '#fff',
-                color: '#1a1a1a'
-              }}
-            />
-            {isLoading && (
-              <div style={{
-                position: 'absolute',
-                right: '1rem',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: '#6c757d',
-                fontSize: '0.875rem'
-              }}>
-                Loading...
-              </div>
-            )}
-            {showSuggestions && suggestions.length > 0 && (
-              <div className="suggestions-dropdown">
-                {suggestions.map((suggestion, index) => (
-                  <div
-                    key={index}
-                    className="suggestion-item"
-                    onClick={() => handleSelectSuggestion(suggestion)}
-                  >
-                    <div className="suggestion-title">
-                      {suggestion.structuredFormat?.mainText?.text || suggestion.text?.text}
-                    </div>
-                    <div className="suggestion-address">
-                      {suggestion.structuredFormat?.secondaryText?.text || ""}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          Event Location <span className="required">*</span>
         </label>
+        <div className="location-input-container">
+          <input
+            type="text"
+            name="location"
+            ref={locationInputRef}
+            placeholder="e.g., The Grand Hotel, Paris"
+            autoComplete="off"
+            required
+            value={locationValue}
+            onChange={handleInputChange}
+            onFocus={() => setShowSuggestions(suggestions.length > 0)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            disabled={!GOOGLE_MAPS_API_KEY}
+          />
+          {isLoading && (
+            <div style={{
+              position: 'absolute',
+              right: '1rem',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: '#6c757d',
+              fontSize: '0.875rem'
+            }}>
+              Loading...
+            </div>
+          )}
+          {showSuggestions && suggestions.length > 0 && (
+            <div className="suggestions-dropdown">
+              {suggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className="suggestion-item"
+                  onClick={() => handleSelectSuggestion(suggestion)}
+                >
+                  <div className="suggestion-title">
+                    {suggestion.structuredFormat?.mainText?.text || suggestion.text?.text}
+                  </div>
+                  <div className="suggestion-address">
+                    {suggestion.structuredFormat?.secondaryText?.text || ""}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
         {errors.location && <div className="error">{errors.location}</div>}
         <label>
           Setting <span className="required">*</span>
@@ -325,4 +271,4 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       </form>
     </ErrorBoundary>
   );
-} 
+}

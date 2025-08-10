@@ -37,8 +37,6 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
     <form onSubmit={handleSubmit}>
       <div className="section-header">
         <User className="section-icon" />
-        <h2 className="section-title">Contact & Notes</h2>
-        <p className="section-subtitle">Tell us how to reach you and any additional information.</p>
       </div>
 
       <label>
@@ -99,4 +97,4 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
       </div>
     </form>
   );
-} 
+}

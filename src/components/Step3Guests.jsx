@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Users } from "lucide-react";
 
 export default function Step3Guests({ data, onNext, onBack, onUpdate }) {
@@ -32,8 +32,6 @@ export default function Step3Guests({ data, onNext, onBack, onUpdate }) {
     <form onSubmit={handleNext}>
       <div className="section-header">
         <Users className="section-icon" />
-        <h2 className="section-title">Number of Guests</h2>
-        <p className="section-subtitle">This helps us prepare the perfect performance.</p>
       </div>
 
       {/* Guests */}
@@ -106,4 +104,4 @@ export default function Step3Guests({ data, onNext, onBack, onUpdate }) {
       </div>
     </form>
   );
-} 
+}

@@ -34,7 +34,7 @@ body {
 /* Page Header Content */
 .page-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem; 
   padding: 2rem 0;
   max-width: 1000px;
   margin-left: auto;
@@ -42,8 +42,15 @@ body {
 }
 
 .brand-header {
-  margin-bottom: var(--space-xl);
+  margin-bottom: 1rem; /* Reduced from var(--space-xl) to 1rem */
   text-align: center;
+}
+
+.brand-logo {
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
 }
 
 .brand-main {
@@ -51,7 +58,7 @@ body {
   align-items: baseline;
   justify-content: center;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Reduced from 1.5rem to 1rem */
 }
 
 .brand-prefix {
@@ -79,14 +86,14 @@ body {
   font-family: var(--font-body);
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  margin-bottom: var(--space-lg);
+  margin-bottom: 1rem; /* Reduced from var(--space-lg) to 1rem */
 }
 
 .header-icons {
   display: flex;
   justify-content: center;
   gap: var(--space-lg);
-  margin-bottom: var(--space-lg);
+  margin-bottom: 1rem; /* Reduced from var(--space-lg) to 1rem */
 }
 
 .header-icon {
@@ -106,7 +113,7 @@ body {
   font-family: var(--font-heading);
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: var(--space-lg);
+  margin-bottom: 1rem; /* Reduced from var(--space-lg) to 1rem */
   line-height: 1.2;
   text-align: center;
 }
@@ -152,7 +159,7 @@ body {
 /* Progress Bar Container */
 .progress-container {
   margin-bottom: var(--space-lg);
-  padding: 0 var(--space-sm);
+  padding: 0; /* Removed padding to align with form content */
 }
 
 .progress-header {
@@ -160,7 +167,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--space-sm);
-  font-size: 0.875rem;
+  font-size: 1.125rem; /* Increased from 0.875rem to 1.125rem */
   font-weight: 500;
 }
 
@@ -208,7 +215,7 @@ body {
 
 label {
   display: block;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
   font-weight: 500;
   font-family: var(--font-body);
 }
@@ -220,17 +227,26 @@ label + .checkbox-group,
 label + input,
 label + textarea,
 label + .date-row,
+label + .location-input-container,
+.location-input-container + label,
 .radio-grid + label,
 .radio-group + label,
 .checkbox-group + label,
-.info-box + label {
-  margin-top: 1.25rem; /* 20px equivalent */
+.info-box + label,
+.error + label,
+.error + .location-input-container,
+.error + .radio-grid,
+.error + .form-navigation,
+label + .form-navigation,
+label + .radio-grid {
+  margin-top: 1rem; /* UNIFORM spacing: 1rem (16px) everywhere */
 }
 
 /* Add spacing after section headers */
 .section-header + label,
-.section-header + .info-box {
-  margin-top: 1.5rem; /* 24px equivalent */
+.section-header + .info-box,
+.error + .section-header {
+  margin-top: 1rem; /* UNIFORM spacing: 1rem (16px) everywhere */
 }
 
 input, select, textarea {
@@ -239,7 +255,8 @@ input, select, textarea {
   border: 1px solid #e9ecef;
   border-radius: 0.75rem;
   font-size: var(--font-size-base);
-  margin-bottom: var(--space-sm);
+  margin-top: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+  margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
   background: #fff;
   transition: border 0.2s;
   font-family: var(--font-body);
@@ -262,7 +279,8 @@ input[type="checkbox"]:focus {
 .helper-text {
   font-size: var(--font-size-sm);
   color: #6c757d;
-  margin-bottom: var(--space-xs);
+  margin-top: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+  margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
 }
 
 .required {
@@ -274,7 +292,7 @@ input[type="checkbox"]:focus {
   display: flex;
   justify-content: flex-end;
   gap: var(--space-sm);
-  margin-top: var(--space-md);
+  margin-top: 2rem; /* Reasonable spacing: 2rem (32px) */
 }
 button {
   background: var(--odd-sox-orange);
@@ -312,14 +330,84 @@ button.secondary:hover {
 .error {
   color: #dc3545;
   font-size: var(--font-size-sm);
-  margin-bottom: var(--space-sm);
+  margin-top: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+  margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
 }
 
 .checkbox-group {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-sm);
+  gap: var(--space-sm);
+  margin-top: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+  margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.checkbox-item:hover {
+  border-color: var(--odd-sox-orange);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  accent-color: var(--odd-sox-orange);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkbox-item label {
+  margin: 0;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--odd-sox-dark);
+  flex-grow: 1;
+  user-select: none;
+}
+
+.checkbox-item:has(input[type="checkbox"]:checked) {
+  border-color: var(--odd-sox-orange);
+  background-color: rgba(255, 140, 0, 0.02);
+}
+
+.checkbox-item input[type="checkbox"]:focus {
+  outline: 2px solid var(--odd-sox-orange);
+  outline-offset: 2px;
+}
+
+/* Special checkbox style for date range - no border unless selected */
+.checkbox-item.date-range {
+  border: none;
+  background-color: transparent;
+  padding: 0.5rem 0;
+  min-width: auto;
+}
+
+.checkbox-item.date-range:hover {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.checkbox-item.date-range:has(input[type="checkbox"]:checked) {
+  border: 1px solid var(--odd-sox-orange);
+  background-color: rgba(255, 140, 0, 0.02);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  min-width: 140px;
 }
 
 /* Miglioramento radio button per scelta data */
@@ -328,7 +416,8 @@ button.secondary:hover {
   flex-direction: row;
   gap: 2.5em;
   align-items: center;
-  margin-bottom: var(--space-sm);
+  margin-top: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+  margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
 }
 .radio-group label {
   display: flex;
@@ -347,7 +436,8 @@ input[type="radio"] {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-sm);
-  margin-top: var(--space-xs);
+  margin-top: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+  margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
 }
 
 .radio-card {
@@ -440,7 +530,41 @@ input[type="radio"] {
   border: 1px solid #e9ecef;
   border-radius: 0.75rem;
   padding: var(--space-md);
-  margin-bottom: var(--space-md);
+  margin-top: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+  margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+}
+
+.band-info-content {
+  display: flex;
+  align-items: flex-start; /* This ensures top alignment */
+  gap: var(--space-md);
+}
+
+.band-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+  border: 2px solid var(--odd-sox-orange);
+  margin-top: 0; /* Ensure no top margin */
+}
+
+.band-description {
+  flex: 1;
+  margin-top: 0; /* Ensure no top margin */
+}
+
+.band-description p {
+  font-size: 1.1rem; /* Reduced from 1.125rem to 1rem (16px) */
+  line-height: 1.7; /* Slightly reduced line height */
+  margin: 0;
+  padding: 0.25rem 0; /* Reduced padding */
+}
+
+.band-description p br {
+  display: block;
+  margin-bottom: 0.75rem; /* Added space after line breaks */
 }
 
 .info-box p {
@@ -460,7 +584,8 @@ input[type="radio"] {
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  margin-bottom: var(--space-sm);
+  margin-top: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+  margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
 }
 
 .date-input {
@@ -501,7 +626,7 @@ input[type="radio"] {
 /* Section titles styling */
 .section-title {
   text-align: center;
-  margin-bottom: var(--space-sm);
+  margin-bottom: 2rem; /* Reasonable spacing: 2rem (32px) */
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--odd-sox-dark);
@@ -538,7 +663,7 @@ input[type="radio"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: var(--space-lg);
+  margin-top: 1.5rem; /* Reasonable spacing: 1.5rem (24px) */
   gap: var(--space-md);
 }
 
@@ -587,6 +712,10 @@ input[type="radio"] {
     margin-bottom: 2rem;
     padding: 1rem 0;
     max-width: 100%;
+  }
+  
+  .brand-logo {
+    max-width: 250px;
   }
   
   .brand-main {
@@ -674,6 +803,10 @@ input[type="radio"] {
     padding: 0.5rem var(--space-xs);
   }
   
+  .brand-logo {
+    max-width: 200px;
+  }
+  
   .brand-main {
     gap: 0.3rem;
     margin-bottom: 1rem;
@@ -748,8 +881,25 @@ input[type="radio"] {
     gap: var(--space-sm);
   }
   
+  .checkbox-item {
+    min-width: auto;
+    width: 100%;
+  }
+  
   .info-box {
     padding: var(--space-sm);
+  }
+  
+  .band-info-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .band-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: var(--space-sm);
   }
 }
 
@@ -823,19 +973,13 @@ input[type="radio"] {
 
 .location-input-container input {
   width: 100%;
-  padding: var(--space-xs);
-  border: 1px solid #e9ecef;
-  border-radius: 0.75rem;
-  font-size: var(--font-size-base);
-  margin-bottom: 0;
-  background: #fff !important;
-  transition: border 0.2s;
-  font-family: var(--font-body);
-  color: var(--odd-sox-dark) !important;
-  position: relative;
-  z-index: 1;
-  box-sizing: border-box;
-  max-width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #1a1a1a;
+  margin-bottom: 0; /* Remove margin since spacing is handled by container */
 }
 
 .location-input-container input:focus {

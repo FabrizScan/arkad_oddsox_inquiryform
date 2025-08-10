@@ -7,6 +7,7 @@ import Step5ContactNotes from "./components/Step5ContactNotes"; // Nuovo Step 5
 import Stepper from "./components/Stepper";
 import { Music, Calendar, MapPin, Users, MessageCircle } from "lucide-react";
 import "./styles/main.css";
+import logoImage from "./images/ORANGE_HORIZONTAL.png";
 
 // --- SOLO PER DEMO LOCALE! ---
 // Inserisci qui la tua URL e chiave anon di Supabase (NON service_role!)
@@ -15,11 +16,11 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const SUPABASE_TABLE = "n8n_oddsox_leads_form";
 
 const steps = [
-  "Tell us about your event",
-  "Location",
-  "Number of Guests",
-  "Music & Group Preferences",
-  "Contact & Notes"
+  "",
+  "",
+  "",
+  "",
+  ""
 ];
 
 // Funzione per leggere i parametri URL
@@ -48,14 +49,14 @@ export default function App() {
       // Gestione event_type personalizzato
       let eventType = urlParams.eventType;
       let otherEventType = '';
-      
+
       // Se l'event_type non è nelle opzioni predefinite, imposta "other"
       const validEventTypes = ['wedding', 'private_event', 'corporate_event', 'other'];
       if (eventType && !validEventTypes.includes(eventType)) {
         otherEventType = eventType; // Salva il valore originale
         eventType = 'other'; // Imposta come "other"
       }
-      
+
       const prefillData = {
         eventType: eventType,
         otherEventType: otherEventType,
@@ -87,7 +88,6 @@ export default function App() {
   // Adatta i dati del form per la tabella Supabase
   function mapFormDataToPayload(formData) {
     return {
-      user_type: formData.userType,
       event_type: formData.eventType === "other" ? formData.otherEventType : formData.eventType,
       date_type: formData.isDateRange ? "range" : "single",
       start_date: formData.startDate,
@@ -111,11 +111,11 @@ export default function App() {
   const handleFinalSubmit = async (fields) => {
     setSubmitting(true);
     setError(null);
-    
+
     console.log("=== DEBUGGING SUBMIT ===");
     console.log("Fields from last step:", fields);
     console.log("Form data from previous steps:", formData);
-    
+
     try {
       // Unisci i dati dell'ultimo step con quelli precedenti
       const finalData = { ...formData, ...fields };
@@ -127,7 +127,7 @@ export default function App() {
       console.log("Type of SUPABASE_TABLE:", typeof SUPABASE_TABLE);
       console.log("Length of SUPABASE_TABLE:", SUPABASE_TABLE.length);
       console.log("SUPABASE_TABLE char by char:", SUPABASE_TABLE.split('').map((char, i) => `${i}:${char}`).join(', '));
-      
+
       const rawUrl = `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`;
       console.log("Raw URL construction:", `${SUPABASE_URL}/rest/v1/` + SUPABASE_TABLE);
       console.log("Raw URL result:", rawUrl);
@@ -227,13 +227,13 @@ export default function App() {
         <div className="submission-success">
           <h2>Thank You!</h2>
           <p>Your event details have been successfully submitted. We'll be in touch soon!</p>
-          <button 
+          <button
             onClick={() => {
               setSubmitted(false);
               setCurrentStep(0); // Torna allo step 1
               setFormData({}); // Resetta tutti i dati
               setError(null);
-            }} 
+            }}
             className="button"
           >
             Submit another form
@@ -244,24 +244,12 @@ export default function App() {
           {/* Page Header Content */}
           <div className="page-header">
             <div className="brand-header">
-              <div className="brand-main">
-                <span className="brand-prefix">the</span>
-                <span className="brand-name">Odd Sox</span>
-              </div>
-              <span className="brand-suffix">INTERNATIONAL</span>
-            </div>
-            <div className="header-icons">
-              <Music className="header-icon" />
-              <Calendar className="header-icon" />
-              <MapPin className="header-icon" />
+              <img src={logoImage} alt="The Odd Sox International" className="brand-logo" />
             </div>
             <h1 className="page-title">
               <span className="title-main">Interactive</span>
               <span className="title-accent">Booking</span>
             </h1>
-            <p className="page-description">
-              Let's create the perfect musical experience for your special day. Our step-by-step form helps us understand your vision and provide a personalized quote.
-            </p>
           </div>
 
           {/* Form Container */}
@@ -273,4 +261,4 @@ export default function App() {
       )}
     </div>
   );
-} 
+}

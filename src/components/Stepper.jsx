@@ -10,11 +10,11 @@ export default function Stepper({ steps, currentStep }) {
         <span className="progress-percentage">{Math.round(progressPercentage)}% Complete</span>
       </div>
       <div className="progress-bar">
-        <div 
-          className="progress-fill" 
+        <div
+          className="progress-fill"
           style={{ width: `${progressPercentage}%` }}
         ></div>
       </div>
     </div>
   );
-} 
+}

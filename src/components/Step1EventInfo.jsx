@@ -8,7 +8,6 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
     startDate: data.startDate || "",
     endDate: data.endDate || "",
     isDateRange: data.isDateRange || false,
-    userType: data.userType || "",
   });
   const [errors, setErrors] = useState({});
 
@@ -20,7 +19,6 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
       startDate: data.startDate || "",
       endDate: data.endDate || "",
       isDateRange: data.isDateRange || false,
-      userType: data.userType || "",
     });
   }, [data]);
 
@@ -29,8 +27,8 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
-    setFields((prev) => ({ 
-      ...prev, 
+    setFields((prev) => ({
+      ...prev,
       [name]: type === "checkbox" ? checked : value,
       // Reset endDate se disabilitiamo il date range
       ...(name === "isDateRange" && !checked && { endDate: "" })
@@ -55,7 +53,6 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
     if (!fields.startDate) e.startDate = "Required";
     else if (new Date(fields.startDate) < new Date(todayISO))
       e.startDate = "Date cannot be in the past";
-    if (!fields.userType) e.userType = "Required";
 
     if (fields.isDateRange) {
       if (!fields.endDate) e.endDate = "Required for date range";
@@ -79,43 +76,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
     <form onSubmit={handleNext}>
       <div className="section-header">
         <Calendar className="section-icon" />
-        <h2 className="section-title">Tell us about your event</h2>
-        <p className="section-subtitle">What type of celebration are you planning?</p>
       </div>
-
-      {/* User Type */}
-      <label>
-        Are you booking for? <span className="required">*</span>
-      </label>
-      <div className="radio-grid">
-        <label className="radio-card">
-          <input
-            type="radio"
-            name="userType"
-            value="private"
-            checked={fields.userType === "private"}
-            onChange={handleRadioChange}
-          />
-          <div>
-            <strong>Private</strong>
-            <span>Own wedding, birthday, private event</span>
-          </div>
-        </label>
-        <label className="radio-card">
-          <input
-            type="radio"
-            name="userType"
-            value="professional"
-            checked={fields.userType === "professional"}
-            onChange={handleRadioChange}
-          />
-          <div>
-            <strong>Professional</strong>
-            <span>PR, wedding planner, etc.</span>
-          </div>
-        </label>
-      </div>
-      {errors.userType && <div className="error">{errors.userType}</div>}
 
       {/* Event Type */}
       <label>
@@ -145,7 +106,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
           />
           <div>
             <strong>Private Event</strong>
-            <span>Birthday, anniversary, etc.</span>
+            <span>Birthday, anniversary, celebration</span>
           </div>
         </label>
         <label className="radio-card">
@@ -208,15 +169,16 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
           min={todayISO}
           className="date-input"
         />
-        <label className="checkbox-label">
+        <div className="checkbox-item date-range">
           <input
             type="checkbox"
             name="isDateRange"
             checked={fields.isDateRange}
             onChange={handleChange}
+            id="isDateRange"
           />
-          Insert date range
-        </label>
+          <label htmlFor="isDateRange">Insert date range</label>
+        </div>
       </div>
       {errors.startDate && <div className="error">{errors.startDate}</div>}
 
@@ -247,4 +209,4 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
       </div>
     </form>
   );
-} 
+}

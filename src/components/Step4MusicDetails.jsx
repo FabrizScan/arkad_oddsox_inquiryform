@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Music } from "lucide-react";
+import bandImage from "../images/band.jpg";
 
 export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
   const [fields, setFields] = useState({
@@ -13,12 +14,17 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
-      setFields((prev) => {
-        const newMusicians = checked
-          ? [...prev.musicians, value]
-          : prev.musicians.filter((m) => m !== value);
-        return { ...prev, musicians: newMusicians };
-      });
+      if (checked) {
+        setFields((prev) => ({
+          ...prev,
+          musicians: [...prev.musicians, value],
+        }));
+      } else {
+        setFields((prev) => ({
+          ...prev,
+          musicians: prev.musicians.filter((m) => m !== value),
+        }));
+      }
     } else {
       setFields((prev) => ({ ...prev, [name]: value }));
     }
@@ -26,7 +32,7 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
 
   function validate() {
     const e = {};
-    if (!fields.concertDuration) e.concertDuration = "Required"; // Reso obbligatorio
+    if (!fields.concertDuration) e.concertDuration = "Required";
     return e;
   }
 
@@ -44,19 +50,21 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
     <form onSubmit={handleNext}>
       <div className="section-header">
         <Music className="section-icon" />
-        <h2 className="section-title">Music & Group Preferences</h2>
-        <p className="section-subtitle">Customize your musical experience.</p>
       </div>
 
-      {/* Band Setup Explanation */}
       <div className="info-box">
-        <p>
-          Our standard band setup includes:
-          <br />
-          <strong>Guitars, Double Bass, and Percussion, with all members contributing vocals.</strong>
-          <br />
-          This configuration provides a full, dynamic sound perfect for most events.
-        </p>
+        <div className="band-info-content">
+          <img src={bandImage} alt="Odd Sox Band" className="band-image" />
+          <div className="band-description">
+            <p>
+              Our standard strolling band setup includes:
+              <br />
+              <strong>Guitars, Double Bass, and Percussion, with all members contributing vocals.</strong>
+              <br />
+              This configuration provides a full, dynamic sound perfect for most events.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Expected Concert Duration */}
@@ -77,7 +85,7 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
 
       {/* Dress Code */}
       <label>
-        Any specific dress code for the band? (Optional)
+        Band Dress Code? (Optional)
         <textarea
           name="dressCode"
           value={fields.dressCode}
@@ -88,48 +96,52 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
       </label>
 
       {/* Additional Musicians */}
-      <label>Additional musicians? (Optional)</label>
+      <label>Additional musicians (Optional)</label>
       <div className="checkbox-group">
-        <label>
+        <div className="checkbox-item">
           <input
             type="checkbox"
             name="musicians"
             value="saxophonist"
             checked={fields.musicians.includes("saxophonist")}
             onChange={handleChange}
+            id="saxophonist"
           />
-          Saxophonist
-        </label>
-        <label>
+          <label htmlFor="saxophonist">Saxophonist</label>
+        </div>
+        <div className="checkbox-item">
           <input
             type="checkbox"
             name="musicians"
             value="percussionist"
             checked={fields.musicians.includes("percussionist")}
             onChange={handleChange}
+            id="percussionist"
           />
-          Percussionist
-        </label>
-        <label>
+          <label htmlFor="percussionist">Percussionist</label>
+        </div>
+        <div className="checkbox-item">
           <input
             type="checkbox"
             name="musicians"
             value="trumpeter"
             checked={fields.musicians.includes("trumpeter")}
             onChange={handleChange}
+            id="trumpeter"
           />
-          Trumpeter
-        </label>
-        <label>
+          <label htmlFor="trumpeter">Trumpeter</label>
+        </div>
+        <div className="checkbox-item">
           <input
             type="checkbox"
             name="musicians"
             value="other"
             checked={fields.musicians.includes("other")}
             onChange={handleChange}
+            id="other"
           />
-          Other
-        </label>
+          <label htmlFor="other">Other</label>
+        </div>
       </div>
 
       {fields.musicians.includes("other") && (
@@ -155,4 +167,4 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
       </div>
     </form>
   );
-} 
+}
