@@ -85,7 +85,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
 
       {/* Are you booking for? */}
       <label>
-        Are you booking for? <span className="required">*</span>
+        Booking type <span className="required">*</span>
       </label>
       <div className="radio-grid">
         <label className="radio-card">
@@ -97,8 +97,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
             onChange={handleRadioChange}
           />
           <div>
-            <strong>Private</strong>
-            <span>Own wedding, birthday, private event</span>
+            <strong>I'm booking for myself or private event</strong>
           </div>
         </label>
         <label className="radio-card">
@@ -110,8 +109,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
             onChange={handleRadioChange}
           />
           <div>
-            <strong>Professional</strong>
-            <span>PR, wedding planner, etc.</span>
+            <strong>I'm a professional planner booking on behalf of a client.</strong>
           </div>
         </label>
       </div>
