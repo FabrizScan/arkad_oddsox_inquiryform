@@ -353,6 +353,8 @@ button.secondary:hover {
   transition: all 0.2s ease;
   cursor: pointer;
   min-width: 140px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .checkbox-item:hover {
@@ -405,6 +407,9 @@ button.secondary:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .speaker-icon {
@@ -464,6 +469,8 @@ input[type="radio"] {
   flex: 1;
   min-width: 0;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .radio-card {
@@ -633,6 +640,8 @@ input[type="radio"] {
 .date-input {
   width: 200px !important;
   flex-shrink: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Checkbox label styling */
@@ -908,6 +917,11 @@ input[type="radio"] {
     gap: var(--space-sm);
   }
   
+  .radio-group .radio-card {
+    min-width: auto;
+    width: 100%;
+  }
+  
   .form-navigation {
     flex-direction: column;
     gap: var(--space-sm);
@@ -926,6 +940,28 @@ input[type="radio"] {
   .checkbox-item {
     min-width: auto;
     width: 100%;
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .checkbox-item.date-range {
+    margin-left: 0; /* Remove left margin on mobile */
+    padding: 0.5rem 0;
+  }
+  
+  .checkbox-item.date-range:has(input[type="checkbox"]:checked) {
+    margin-left: 0;
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .date-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+  
+  .date-input {
+    width: 100% !important;
+    max-width: 100%;
   }
   
   .info-box {
