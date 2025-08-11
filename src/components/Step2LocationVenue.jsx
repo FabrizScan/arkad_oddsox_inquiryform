@@ -190,6 +190,8 @@ export default function Step2LocationVenue({ data, onNext, onBack, onUpdate }) {
       <form onSubmit={handleNext}>
         <div className="section-header">
           <MapPin className="section-icon" />
+          <h2 className="section-title">Venue & Location</h2>
+          <p className="section-subtitle">Where will the magic happen? Please provide details about your event location.</p>
         </div>
 
         {/* Location */}

@@ -113,7 +113,7 @@ body {
   font-family: var(--font-heading);
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 1rem; /* Reduced from var(--space-lg) to 1rem */
+  margin-bottom: 0.5rem; /* Reduced from 1rem to 0.5rem to bring text closer */
   line-height: 1.2;
   text-align: center;
 }
@@ -124,7 +124,7 @@ body {
 
 .title-accent {
   color: var(--odd-sox-orange);
-  margin-left: var(--space-sm);
+  margin-left: 0.25rem;
 }
 
 .page-description {
@@ -440,6 +440,13 @@ input[type="radio"] {
   margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
 }
 
+/* Uniform width radio cards for concert duration */
+.radio-group .radio-card {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
 .radio-card {
   position: relative;
   padding: 1rem;
@@ -532,6 +539,22 @@ input[type="radio"] {
   padding: var(--space-md);
   margin-top: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
   margin-bottom: 0.75rem; /* UNIFORM spacing: 0.75rem (12px) everywhere */
+}
+
+/* Yellow info box between title and form */
+.info-box-yellow {
+  text-align: center;
+  margin: 0 auto var(--space-lg);
+  max-width: 800px;
+}
+
+.info-box-yellow p {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--odd-sox-gray);
+  font-family: var(--font-body);
+  font-weight: 400;
 }
 
 .band-info-content {

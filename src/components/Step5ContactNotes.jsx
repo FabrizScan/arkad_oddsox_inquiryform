@@ -37,6 +37,8 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
     <form onSubmit={handleSubmit}>
       <div className="section-header">
         <User className="section-icon" />
+        <h2 className="section-title">Final Details & Contact</h2>
+        <p className="section-subtitle">We're almost there! Please provide your contact information and any final details.</p>
       </div>
 
       <label>

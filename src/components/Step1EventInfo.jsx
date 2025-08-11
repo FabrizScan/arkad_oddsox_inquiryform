@@ -8,6 +8,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
     startDate: data.startDate || "",
     endDate: data.endDate || "",
     isDateRange: data.isDateRange || false,
+    bookingFor: data.bookingFor || "",
   });
   const [errors, setErrors] = useState({});
 
@@ -19,6 +20,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
       startDate: data.startDate || "",
       endDate: data.endDate || "",
       isDateRange: data.isDateRange || false,
+      bookingFor: data.bookingFor || "",
     });
   }, [data]);
 
@@ -47,6 +49,7 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
 
   function validate() {
     const e = {};
+    if (!fields.bookingFor) e.bookingFor = "Required";
     if (!fields.eventType) e.eventType = "Required";
     if (fields.eventType === "other" && !fields.otherEventType)
       e.otherEventType = "Please specify event type";
@@ -76,7 +79,43 @@ export default function Step1EventInfo({ data, onNext, onUpdate }) {
     <form onSubmit={handleNext}>
       <div className="section-header">
         <Calendar className="section-icon" />
+        <h2 className="section-title">Event Details</h2>
+        <p className="section-subtitle">Let's start with the basics. Please tell us about the event you're planning</p>
       </div>
+
+      {/* Are you booking for? */}
+      <label>
+        Are you booking for? <span className="required">*</span>
+      </label>
+      <div className="radio-grid">
+        <label className="radio-card">
+          <input
+            type="radio"
+            name="bookingFor"
+            value="private"
+            checked={fields.bookingFor === "private"}
+            onChange={handleRadioChange}
+          />
+          <div>
+            <strong>Private</strong>
+            <span>Own wedding, birthday, private event</span>
+          </div>
+        </label>
+        <label className="radio-card">
+          <input
+            type="radio"
+            name="bookingFor"
+            value="professional"
+            checked={fields.bookingFor === "professional"}
+            onChange={handleRadioChange}
+          />
+          <div>
+            <strong>Professional</strong>
+            <span>PR, wedding planner, etc.</span>
+          </div>
+        </label>
+      </div>
+      {errors.bookingFor && <div className="error">{errors.bookingFor}</div>}
 
       {/* Event Type */}
       <label>

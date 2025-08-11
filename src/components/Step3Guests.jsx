@@ -32,6 +32,8 @@ export default function Step3Guests({ data, onNext, onBack, onUpdate }) {
     <form onSubmit={handleNext}>
       <div className="section-header">
         <Users className="section-icon" />
+        <h2 className="section-title">Guest Count</h2>
+        <p className="section-subtitle">How many people will be attending your event?</p>
       </div>
 
       {/* Guests */}

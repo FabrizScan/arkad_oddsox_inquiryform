@@ -87,8 +87,9 @@ export default function App() {
 
   // Adatta i dati del form per la tabella Supabase
   function mapFormDataToPayload(formData) {
-    return {
-      event_type: formData.eventType === "other" ? formData.otherEventType : formData.eventType,
+    const payload = {
+      user_type: formData.bookingFor || "",
+      event_type: formData.eventType === "other" ? formData.otherEventType : formData.eventType || "",
       date_type: formData.isDateRange ? "range" : "single",
       start_date: formData.startDate,
       end_date: formData.isDateRange ? formData.endDate : null,
@@ -97,14 +98,14 @@ export default function App() {
       indoor_outdoor: formData.indoorOutdoor,
       guests: formData.guests,
       dress_code: formData.dressCode,
-      concert_duration: formData.concertDuration,
+      concert_duration: formData.concertDurationType === "other" ? formData.otherConcertDuration : formData.concertDurationType,
       musicians: formData.musicians || [],
-      other_musician: formData.otherMusician,
       full_name: formData.fullName,
       email: formData.email,
       phone: formData.phone,
       notes: formData.notes,
     };
+    return payload;
   }
 
   // Unisce i dati dell'ultimo step e invia tutto a Supabase
@@ -250,6 +251,11 @@ export default function App() {
               <span className="title-main">Interactive</span>
               <span className="title-accent">Booking</span>
             </h1>
+          </div>
+
+          {/* Yellow Info Box */}
+          <div className="info-box-yellow">
+            <p>Let's create the perfect musical experience for your special day!<br />This quick form helps us understand your needs so we can provide a tailored quote.</p>
           </div>
 
           {/* Form Container */}

@@ -6,8 +6,9 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
   const [fields, setFields] = useState({
     dressCode: data.dressCode || "",
     concertDuration: data.concertDuration || "",
+    concertDurationType: data.concertDurationType || "",
+    otherConcertDuration: data.otherConcertDuration || "",
     musicians: data.musicians || [],
-    otherMusician: data.otherMusician || "",
   });
   const [errors, setErrors] = useState({});
 
@@ -25,6 +26,13 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
           musicians: prev.musicians.filter((m) => m !== value),
         }));
       }
+    } else if (type === "radio" && name === "concertDurationType") {
+      setFields((prev) => ({ 
+        ...prev, 
+        concertDurationType: value,
+        // Reset otherConcertDuration if not selecting "other"
+        ...(value !== "other" && { otherConcertDuration: "" })
+      }));
     } else {
       setFields((prev) => ({ ...prev, [name]: value }));
     }
@@ -32,7 +40,10 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
 
   function validate() {
     const e = {};
-    if (!fields.concertDuration) e.concertDuration = "Required";
+    if (!fields.concertDurationType) e.concertDurationType = "Required";
+    if (fields.concertDurationType === "other" && !fields.otherConcertDuration.trim()) {
+      e.otherConcertDuration = "Please specify the concert duration";
+    }
     return e;
   }
 
@@ -50,6 +61,8 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
     <form onSubmit={handleNext}>
       <div className="section-header">
         <Music className="section-icon" />
+        <h2 className="section-title">Musical Preferences</h2>
+        <p className="section-subtitle">Configure your ideal band setup</p>
       </div>
 
       <div className="info-box">
@@ -70,22 +83,70 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
       {/* Expected Concert Duration */}
       <label>
         Expected concert duration <span className="required">*</span>
-        <input
-          type="text"
-          name="concertDuration"
-          value={fields.concertDuration}
-          onChange={handleChange}
-          placeholder="e.g., 2 sets of 45 minutes, 3 hours total"
-          required
-        />
-        {errors.concertDuration && (
-          <div className="error">{errors.concertDuration}</div>
-        )}
       </label>
+      <div className="radio-group">
+        <label className="radio-card">
+          <input
+            type="radio"
+            name="concertDurationType"
+            value="2_sets_45min"
+            checked={fields.concertDurationType === "2_sets_45min"}
+            onChange={handleChange}
+          />
+          <div>
+            <strong>2 sets of 45 min</strong>
+          </div>
+        </label>
+        <label className="radio-card">
+          <input
+            type="radio"
+            name="concertDurationType"
+            value="3_sets_30min"
+            checked={fields.concertDurationType === "3_sets_30min"}
+            onChange={handleChange}
+          />
+          <div>
+            <strong>3 sets of 30 min</strong>
+          </div>
+        </label>
+        <label className="radio-card">
+          <input
+            type="radio"
+            name="concertDurationType"
+            value="other"
+            checked={fields.concertDurationType === "other"}
+            onChange={handleChange}
+          />
+          <div>
+            <strong>Other</strong>
+          </div>
+        </label>
+      </div>
+      {errors.concertDurationType && (
+        <div className="error">{errors.concertDurationType}</div>
+      )}
+
+      {/* Other Concert Duration (conditionally rendered) */}
+      {fields.concertDurationType === "other" && (
+        <label>
+          Please specify concert duration:
+          <input
+            type="text"
+            name="otherConcertDuration"
+            value={fields.otherConcertDuration}
+            onChange={handleChange}
+            placeholder="e.g., 4 sets of 20 min, 2 hours total, 1 set of 90 min"
+            required
+          />
+          {errors.otherConcertDuration && (
+            <div className="error">{errors.otherConcertDuration}</div>
+          )}
+        </label>
+      )}
 
       {/* Dress Code */}
       <label>
-        Band Dress Code? (Optional)
+        Band Dress Code (Optional)
         <textarea
           name="dressCode"
           value={fields.dressCode}
@@ -131,31 +192,7 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
           />
           <label htmlFor="trumpeter">Trumpeter</label>
         </div>
-        <div className="checkbox-item">
-          <input
-            type="checkbox"
-            name="musicians"
-            value="other"
-            checked={fields.musicians.includes("other")}
-            onChange={handleChange}
-            id="other"
-          />
-          <label htmlFor="other">Other</label>
-        </div>
       </div>
-
-      {fields.musicians.includes("other") && (
-        <label>
-          Please specify other musician(s):
-          <input
-            type="text"
-            name="otherMusician"
-            value={fields.otherMusician}
-            onChange={handleChange}
-            placeholder="e.g., Violinist, backing vocalist"
-          />
-        </label>
-      )}
 
       <div className="form-navigation">
         <button type="button" onClick={onBack} className="button secondary">
