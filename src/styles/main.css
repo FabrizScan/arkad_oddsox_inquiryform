@@ -394,6 +394,24 @@ button.secondary:hover {
   background-color: transparent;
   padding: 0.5rem 0;
   min-width: auto;
+  margin-top: var(--space-md); /* Add spacing above */
+  margin-bottom: var(--space-md); /* Add spacing below */
+  margin-left: var(--space-md); /* Move block more to the right */
+}
+
+.checkbox-item.date-range label {
+  font-size: 1.1rem; /* Increase font size slightly */
+  font-weight: 500; /* Make it a bit bolder */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.speaker-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--odd-sox-orange);
+  flex-shrink: 0;
 }
 
 .checkbox-item.date-range:hover {
@@ -408,6 +426,7 @@ button.secondary:hover {
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   min-width: 140px;
+  margin-left: 0; /* Remove left margin when selected to align border with form */
 }
 
 /* Miglioramento radio button per scelta data */

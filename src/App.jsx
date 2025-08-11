@@ -96,8 +96,9 @@ export default function App() {
       // Location now contains "name, address" format from Google Places API
       location: formData.location || "",
       indoor_outdoor: formData.indoorOutdoor,
-      guests: formData.guests,
-      dress_code: formData.dressCode,
+      guests: formData.guests || "",
+      sound_system_required: formData.soundSystemRequired || false,
+      dress_code: formData.dressCode || "",
       concert_duration: formData.concertDurationType === "other" ? formData.otherConcertDuration : formData.concertDurationType,
       musicians: formData.musicians || [],
       full_name: formData.fullName,
@@ -121,6 +122,22 @@ export default function App() {
       // Unisci i dati dell'ultimo step con quelli precedenti
       const finalData = { ...formData, ...fields };
       const payload = mapFormDataToPayload(finalData);
+
+      // Required fields validation
+      const requiredFields = ['user_type', 'event_type', 'start_date', 'location', 'indoor_outdoor', 'guests', 'concert_duration', 'full_name', 'email'];
+      const missingFields = requiredFields.filter(field => !payload[field] || payload[field].toString().trim() === '');
+
+      if (missingFields.length > 0) {
+        throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
+      }
+
+      // Additional validation for sound system when required
+      if (payload.guests && (payload.guests.includes('Large') || payload.guests.includes('Very Large'))) {
+        if (payload.indoor_outdoor && payload.indoor_outdoor !== 'Indoor') {
+          // For outdoor/both events with large guest counts, sound system info should be provided
+          console.log('Sound system recommendation for outdoor event with large guest count');
+        }
+      }
 
       console.log("Final payload:", payload);
       console.log("SUPABASE_TABLE constant:", SUPABASE_TABLE);
