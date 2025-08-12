@@ -73,7 +73,7 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
         />
         {Boolean(fields.airtableRecordId && fields.airtableRecordId.trim() !== '') && (
           <small style={{ color: '#6c757d', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
-            Email non modificabile per record esistenti (Record ID: {fields.airtableRecordId})
+            Email field is read-only for existing records
           </small>
         )}
         {errors.email && <div className="error">{errors.email}</div>}
