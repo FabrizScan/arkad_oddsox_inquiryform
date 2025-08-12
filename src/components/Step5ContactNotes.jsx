@@ -7,7 +7,15 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
     email: data.email || "",
     phone: data.phone || "",
     notes: data.notes || "",
+    airtableRecordId: data.airtableRecordId || "",
+    airtableContactId: data.airtableContactId || "",
   });
+
+  // Debug logging
+  console.log('Step5ContactNotes - data received:', data);
+  console.log('Step5ContactNotes - fields state:', fields);
+  console.log('Step5ContactNotes - airtableRecordId:', fields.airtableRecordId);
+  console.log('Step5ContactNotes - readOnly condition:', Boolean(fields.airtableRecordId && fields.airtableRecordId.trim() !== ''));
   const [errors, setErrors] = useState({});
 
   function handleChange(e) {
@@ -61,7 +69,18 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
           value={fields.email}
           onChange={handleChange}
           required
+          readOnly={Boolean(fields.airtableRecordId && fields.airtableRecordId.trim() !== '')}
+          style={Boolean(fields.airtableRecordId && fields.airtableRecordId.trim() !== '') ? { 
+            backgroundColor: '#f8f9fa', 
+            color: '#6c757d',
+            cursor: 'not-allowed'
+          } : {}}
         />
+        {Boolean(fields.airtableRecordId && fields.airtableRecordId.trim() !== '') && (
+          <small style={{ color: '#6c757d', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
+            Email non modificabile per record esistenti (Record ID: {fields.airtableRecordId})
+          </small>
+        )}
         {errors.email && <div className="error">{errors.email}</div>}
       </label>
 
