@@ -109,7 +109,7 @@ export default function App() {
       location: formData.location || "",
       indoor_outdoor: formData.indoorOutdoor,
       guests: formData.guests || "",
-      sound_system_required: formData.soundSystemRequired || false,
+      sound_system_provided_by_hirer: formData.soundSystemRequired || false,
       dress_code: formData.dressCode || "",
       concert_duration: formData.concertDurationType === "other" ? formData.otherConcertDuration : formData.concertDurationType,
       musicians: formData.musicians || [],
@@ -216,12 +216,23 @@ export default function App() {
       console.log('=== N8N WEBHOOK DEBUG ===');
       console.log('Sending complete data to n8n webhook');
       
+      // Crea un payload più chiaro per n8n
+      const webhookPayload = {
+        ...formData,
+        // Campo più chiaro per il sistema audio
+        sound_system_status: formData.soundSystemRequired 
+          ? "Provided by Client (No Quote Needed)" 
+          : "Needs to be Quoted",
+        // Mantieni anche il campo originale per compatibilità
+        soundSystemRequired: formData.soundSystemRequired
+      };
+      
       const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(webhookPayload)
       });
 
       if (!response.ok) {
