@@ -11,11 +11,6 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
     airtableContactId: data.airtableContactId || "",
   });
 
-  // Debug logging
-  console.log('Step5ContactNotes - data received:', data);
-  console.log('Step5ContactNotes - fields state:', fields);
-  console.log('Step5ContactNotes - airtableRecordId:', fields.airtableRecordId);
-  console.log('Step5ContactNotes - readOnly condition:', Boolean(fields.airtableRecordId && fields.airtableRecordId.trim() !== ''));
   const [errors, setErrors] = useState({});
 
   function handleChange(e) {
@@ -107,6 +102,10 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
       </label>
 
       {error && <div className="error">{error}</div>}
+
+      {/* Hidden fields for Airtable */}
+      <input type="hidden" name="airtableRecordId" value={fields.airtableRecordId} />
+      <input type="hidden" name="airtableContactId" value={fields.airtableContactId} />
 
       <div className="form-navigation">
         <button type="button" onClick={onBack} className="button secondary">

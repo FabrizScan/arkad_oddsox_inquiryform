@@ -121,43 +121,6 @@ export default function App() {
     return payload;
   }
 
-  // Adatta i dati del form per Airtable
-  function mapFormDataToAirtable(formData) {
-    // Funzione helper per convertire date in formato UTC
-    const formatDateToUTC = (dateString) => {
-      if (!dateString) return "";
-      const date = new Date(dateString);
-      return date.toISOString().split('T')[0]; // Solo la data, formato YYYY-MM-DD
-    };
-
-    // Crea l'Inquiry Title
-    const eventTitle = formData.eventType === "other" ? formData.otherEventType : formData.eventType || "";
-    const capitalizedEventTitle = eventTitle.charAt(0).toUpperCase() + eventTitle.slice(1);
-    const inquiryTitle = `${capitalizedEventTitle} in ${formData.location || ""} on ${formatDateToUTC(formData.startDate)}`;
-
-    // Unisci le preferenze musicali in un unico campo
-    const musicalPreferences = [
-      `Concert Duration: ${formData.concertDurationType === "other" ? formData.otherConcertDuration : formData.concertDurationType || "Not specified"}`,
-      `Additional Musicians: ${formData.musicians ? formData.musicians.join(", ") : "None"}`,
-      `Dress Code: ${formData.dressCode || "Not specified"}`,
-      `Sound System Required: ${formData.soundSystemRequired ? "Yes" : "No"}`
-    ].join("\n");
-
-    return {
-      "Inquiry Title": inquiryTitle,
-      "Status": "Ready to quote", // Status fisso
-      "User Type": formData.bookingFor || "",
-      "Event Type": formData.eventType === "other" ? formData.otherEventType : formData.eventType || "",
-      // "Date Type": formData.isDateRange ? "Range" : "Single", // Commentato per ora
-      // "Start Date": formatDateToUTC(formData.startDate), // Commentato per ora
-      // "End Date": formData.isDateRange ? formatDateToUTC(formData.endDate) : "", // Commentato per ora
-      "Location": formData.location || "",
-      // "Indoor/Outdoor": formData.indoorOutdoor || "", // Commentato per ora
-      "Guest Count": formData.guests || "",
-      "Musical Preferences": musicalPreferences, // Campo unificato
-    };
-  }
-
   // Unisce i dati dell'ultimo step e invia tutto a Supabase
   const handleFinalSubmit = async (fields) => {
     setSubmitting(true);
@@ -171,7 +134,6 @@ export default function App() {
       // Unisci i dati dell'ultimo step con quelli precedenti
       const finalData = { ...formData, ...fields };
       const payload = mapFormDataToPayload(finalData);
-      const airtablePayload = mapFormDataToAirtable(finalData);
 
       // Required fields validation
       const requiredFields = ['user_type', 'event_type', 'start_date', 'location', 'indoor_outdoor', 'guests', 'concert_duration', 'full_name', 'email'];
@@ -190,7 +152,6 @@ export default function App() {
       }
 
       console.log("Final payload:", payload);
-      console.log("Airtable payload:", airtablePayload);
       console.log("SUPABASE_TABLE constant:", SUPABASE_TABLE);
       console.log("SUPABASE_URL constant:", SUPABASE_URL);
       console.log("Type of SUPABASE_TABLE:", typeof SUPABASE_TABLE);
@@ -230,41 +191,6 @@ export default function App() {
 
       setSubmitted(true);
       setFormData({});
-
-      // Send to Airtable
-      try {
-        const { createLead, updateLead } = await import('./services/airtableApi');
-        
-        console.log("=== AIRTABLE DEBUG ===");
-        console.log("Airtable payload for create:", airtablePayload);
-        
-        let airtableResult;
-        if (finalData.airtableRecordId) {
-          // Update existing record - include record ID in payload
-          const updatePayload = {
-            ...airtablePayload,
-            "Airtable Record ID": finalData.airtableRecordId,
-            "Airtable Contact ID": finalData.airtableContactId || "",
-          };
-          console.log("Airtable payload for update:", updatePayload);
-          airtableResult = await updateLead(finalData.airtableRecordId, updatePayload);
-          console.log("Airtable update success:", airtableResult);
-        } else {
-          // Create new record - don't include record/contact IDs
-          console.log("Creating new Airtable record");
-          airtableResult = await createLead(airtablePayload);
-          console.log("Airtable create success:", airtableResult);
-          
-          // Store the new record ID for future updates
-          if (airtableResult.records && airtableResult.records[0]) {
-            finalData.airtableRecordId = airtableResult.records[0].id;
-            console.log("New Airtable record ID:", finalData.airtableRecordId);
-          }
-        }
-      } catch (airtableError) {
-        console.error("Airtable error (non-blocking):", airtableError);
-        // Airtable errors don't block the form submission
-      }
 
       // Send to N8N webhook
       try {
