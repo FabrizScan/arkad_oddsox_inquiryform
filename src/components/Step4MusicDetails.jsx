@@ -82,7 +82,7 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
 
       {/* Expected Concert Duration */}
       <label>
-        Expected concert duration <span className="required">*</span>
+        Concert's duration and sets <span className="required">*</span>
       </label>
       <div className="radio-group">
         <label className="radio-card">
@@ -147,14 +147,14 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
       {/* Dress Code */}
       <label>
         Band Dress Code (Optional)
-        <textarea
-          name="dressCode"
-          value={fields.dressCode}
-          onChange={handleChange}
-          rows="3"
-          placeholder="e.g., Black tie, casual, themed costume"
-        ></textarea>
       </label>
+      <textarea
+        name="dressCode"
+        value={fields.dressCode}
+        onChange={handleChange}
+        rows="3"
+        placeholder="The group always wears suits. If you have a specific outfit, let us know and we'll check the price for its purchase. Examples: Black tie, casual, themed costume"
+      ></textarea>
 
       {/* Additional Musicians */}
       <label>Additional musicians (Optional)</label>

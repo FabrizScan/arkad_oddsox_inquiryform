@@ -109,7 +109,6 @@ export default function App() {
       location: formData.location || "",
       indoor_outdoor: formData.indoorOutdoor,
       guests: formData.guests || "",
-      sound_system_provided_by_hirer: formData.soundSystemRequired || false,
       dress_code: formData.dressCode || "",
       concert_duration: formData.concertDurationType === "other" ? formData.otherConcertDuration : formData.concertDurationType,
       musicians: formData.musicians || [],
@@ -141,14 +140,6 @@ export default function App() {
 
       if (missingFields.length > 0) {
         throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
-      }
-
-      // Additional validation for sound system when required
-      if (payload.guests && (payload.guests.includes('Large') || payload.guests.includes('Very Large'))) {
-        if (payload.indoor_outdoor && payload.indoor_outdoor !== 'Indoor') {
-          // For outdoor/both events with large guest counts, sound system info should be provided
-          console.log('Sound system recommendation for outdoor event with large guest count');
-        }
       }
 
       console.log("Final payload:", payload);
@@ -219,11 +210,6 @@ export default function App() {
       // Crea un payload più chiaro per n8n
       const webhookPayload = {
         ...formData,
-        // Campo più chiaro per il sistema audio
-        sound_system_status: formData.soundSystemRequired 
-          ? "Provided by Client (No Quote Needed)" 
-          : "Needs to be Quoted",
-        // Mantieni anche il campo originale per compatibilità
         soundSystemRequired: formData.soundSystemRequired
       };
       

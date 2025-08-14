@@ -583,9 +583,10 @@ input[type="radio"] {
   font-weight: 400;
 }
 
+/* Band info content styling - original layout */
 .band-info-content {
   display: flex;
-  align-items: flex-start; /* This ensures top alignment */
+  align-items: flex-start;
   gap: var(--space-md);
 }
 
@@ -596,24 +597,24 @@ input[type="radio"] {
   border-radius: 0.5rem;
   flex-shrink: 0;
   border: 2px solid var(--odd-sox-orange);
-  margin-top: 0; /* Ensure no top margin */
+  margin-top: 0;
 }
 
 .band-description {
   flex: 1;
-  margin-top: 0; /* Ensure no top margin */
+  margin-top: 0;
 }
 
 .band-description p {
-  font-size: 1.1rem; /* Reduced from 1.125rem to 1rem (16px) */
-  line-height: 1.7; /* Slightly reduced line height */
+  font-size: 1.1rem;
+  line-height: 1.7;
   margin: 0;
-  padding: 0.25rem 0; /* Reduced padding */
+  padding: 0.25rem 0;
 }
 
 .band-description p br {
   display: block;
-  margin-bottom: 0.75rem; /* Added space after line breaks */
+  margin-bottom: 0.75rem;
 }
 
 .info-box p {
@@ -932,6 +933,15 @@ input[type="radio"] {
     min-width: auto;
   }
   
+  /* Invert order for mobile: Next button first, Back button second */
+  .form-navigation .button.primary {
+    order: -1; /* Move primary (Next) button to top */
+  }
+  
+  .form-navigation .button.secondary {
+    order: 1; /* Move secondary (Back) button to bottom */
+  }
+  
   .checkbox-group {
     flex-direction: column;
     gap: var(--space-sm);
@@ -978,6 +988,10 @@ input[type="radio"] {
     width: 100px;
     height: 100px;
     margin-bottom: var(--space-sm);
+  }
+  
+  .band-description p {
+    text-align: center;
   }
 }
 
@@ -1107,4 +1121,82 @@ input[type="radio"] {
   color: #6b7280;
   font-size: 0.875rem;
   line-height: 1.4;
+} 
+
+/* Specific styling for band info box - high specificity */
+.info-box .band-info-content {
+  display: block !important;
+  position: relative;
+  overflow: hidden !important;
+}
+
+.info-box .band-image {
+  float: left !important;
+  margin-right: 1rem !important;
+  margin-bottom: 0.5rem !important;
+  width: 120px !important;
+  height: 120px !important;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 2px solid var(--odd-sox-orange);
+}
+
+.info-box .band-description {
+  text-align: justify !important;
+  overflow: hidden;
+}
+
+.info-box .band-description p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin: 0;
+  padding: 0.25rem 0;
+} 
+
+/* Mobile responsive for band info */
+@media (max-width: 768px) {
+  .band-info-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .band-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .band-description p {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .band-info-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .band-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .band-description p {
+    text-align: center;
+  }
+} 
+
+/* Dress code info styling - removed as now integrated in placeholder */ 
+
+/* Special spacing for dress code section - more compact */
+label:has(+ textarea[name="dressCode"]) {
+  margin-bottom: 0.25rem; /* Reduced spacing for dress code label */
+}
+
+textarea[name="dressCode"] {
+  margin-top: 0.25rem; /* Reduced spacing for dress code textarea */
 } 
