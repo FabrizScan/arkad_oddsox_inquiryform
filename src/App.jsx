@@ -100,6 +100,8 @@ export default function App() {
   // Adatta i dati del form per la tabella Supabase
   function mapFormDataToPayload(formData) {
     const payload = {
+      record_id: formData.airtableRecordId || "",
+      contact_id: formData.airtableContactId || "",
       user_type: formData.bookingFor || "",
       event_type: formData.eventType === "other" ? formData.otherEventType : formData.eventType || "",
       date_type: formData.isDateRange ? "range" : "single",
@@ -222,9 +224,12 @@ export default function App() {
       console.log('=== N8N WEBHOOK DEBUG ===');
       console.log('Sending complete data to n8n webhook');
       
+      // Usa i dati elaborati da mapFormDataToPayload per avere concert_duration completo
+      const processedData = mapFormDataToPayload(formData);
+      
       // Crea un payload più chiaro per n8n
       const webhookPayload = {
-        ...formData,
+        ...processedData,
         soundSystemRequired: formData.soundSystemRequired
       };
       
