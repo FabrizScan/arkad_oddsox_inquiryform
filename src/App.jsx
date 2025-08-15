@@ -110,7 +110,22 @@ export default function App() {
       indoor_outdoor: formData.indoorOutdoor,
       guests: formData.guests || "",
       dress_code: formData.dressCode || "",
-      concert_duration: formData.concertDurationType === "other" ? formData.otherConcertDuration : formData.concertDurationType,
+      concert_duration: (() => {
+        let baseDuration = formData.concertDurationType;
+        let extraSets = formData.extraSets || "";
+        
+        if (!extraSets) {
+          return baseDuration;
+        }
+        
+        if (extraSets === '1_extra_set') {
+          return baseDuration + ' + 1 extra set';
+        } else if (extraSets === '2_extra_sets') {
+          return baseDuration + ' + 2 extra sets';
+        }
+        
+        return baseDuration;
+      })(),
       musicians: formData.musicians || [],
       full_name: formData.fullName,
       email: formData.email,

@@ -1247,6 +1247,38 @@ input[type="radio"] {
   }
 } 
 
+/* Concert duration radio group - optimized for 2 options */
+.radio-group.concert-duration {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.radio-group.concert-duration .radio-card {
+  min-width: 200px;
+  text-align: left; /* Align text to left */
+}
+
+/* Extra sets section styling - removed box styling */
+
+
+
+/* Info icon styling for extra sets note */
+.info-icon {
+  display: inline-block;
+  margin-right: 0.5rem;
+  color: var(--odd-sox-orange);
+  vertical-align: middle;
+}
+
+/* Styling for the extra sets note text */
+.radio-group.extra-sets + p {
+  margin-bottom: 2rem; /* Add space below the note */
+  font-size: 1rem; /* Increase font size from default */
+  line-height: 1.5; /* Improve readability */
+}
+
 /* Dress code info styling - removed as now integrated in placeholder */ 
 
 /* Special spacing for dress code section - more compact */
@@ -1256,4 +1288,35 @@ label:has(+ textarea[name="dressCode"]) {
 
 textarea[name="dressCode"] {
   margin-top: 0.25rem; /* Reduced spacing for dress code textarea */
+} 
+
+/* Special spacing for date fields - more compact */
+label:has(+ input[type="date"]),
+label:has(+ .date-row),
+label:has(+ .date-input) {
+  margin-bottom: 0.25rem; /* Reduced spacing for date labels */
+}
+
+/* Additional rule for labels before date-row */
+label + .date-row {
+  margin-top: 0.25rem; /* Reduced spacing above date-row */
+}
+
+input[type="date"],
+.date-input {
+  margin-top: 0.25rem; /* Reduced spacing for date inputs */
+} 
+
+/* Extra sets radio group - more compact height */
+.radio-group.extra-sets {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.radio-group.extra-sets .radio-card.extra-set-option {
+  min-width: 180px;
+  text-align: left; /* Align text to left */
+  padding: 0.75rem 1rem; /* Reduced padding for smaller height */
 } 

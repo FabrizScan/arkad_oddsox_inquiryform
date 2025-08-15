@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Music } from "lucide-react";
 import bandImage from "../images/band.jpg";
+import { Info } from "lucide-react";
 
 export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
   const [fields, setFields] = useState({
     dressCode: data.dressCode || "",
     concertDuration: data.concertDuration || "",
     concertDurationType: data.concertDurationType || "",
-    otherConcertDuration: data.otherConcertDuration || "",
+    extraSets: data.extraSets || "",
     musicians: data.musicians || [],
   });
   const [errors, setErrors] = useState({});
@@ -26,13 +27,12 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
           musicians: prev.musicians.filter((m) => m !== value),
         }));
       }
-    } else if (type === "radio" && name === "concertDurationType") {
-      setFields((prev) => ({ 
-        ...prev, 
-        concertDurationType: value,
-        // Reset otherConcertDuration if not selecting "other"
-        ...(value !== "other" && { otherConcertDuration: "" })
-      }));
+    } else if (type === "radio") {
+      if (name === "extraSets") {
+        setFields((prev) => ({ ...prev, extraSets: value }));
+      } else if (name === "concertDurationType") {
+        setFields((prev) => ({ ...prev, concertDurationType: value }));
+      }
     } else {
       setFields((prev) => ({ ...prev, [name]: value }));
     }
@@ -41,9 +41,6 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
   function validate() {
     const e = {};
     if (!fields.concertDurationType) e.concertDurationType = "Required";
-    if (fields.concertDurationType === "other" && !fields.otherConcertDuration.trim()) {
-      e.otherConcertDuration = "Please specify the concert duration";
-    }
     return e;
   }
 
@@ -84,7 +81,7 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
       <label>
         Concert's duration and sets <span className="required">*</span>
       </label>
-      <div className="radio-group">
+      <div className="radio-group concert-duration">
         <label className="radio-card">
           <input
             type="radio"
@@ -109,40 +106,43 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
             <strong>3 sets of 30 min</strong>
           </div>
         </label>
-        <label className="radio-card">
-          <input
-            type="radio"
-            name="concertDurationType"
-            value="other"
-            checked={fields.concertDurationType === "other"}
-            onChange={handleChange}
-          />
-          <div>
-            <strong>Other</strong>
-          </div>
-        </label>
       </div>
       {errors.concertDurationType && (
         <div className="error">{errors.concertDurationType}</div>
       )}
 
-      {/* Other Concert Duration (conditionally rendered) */}
-      {fields.concertDurationType === "other" && (
-        <label>
-          Please specify concert duration:
+      {/* Extra Sets Section */}
+      <label>Additional Sets (Optional)</label>
+      <div className="radio-group extra-sets">
+        <label className="radio-card extra-set-option">
           <input
-            type="text"
-            name="otherConcertDuration"
-            value={fields.otherConcertDuration}
+            type="radio"
+            name="extraSets"
+            value="1_extra_set"
+            checked={fields.extraSets === "1_extra_set"}
             onChange={handleChange}
-            placeholder="e.g., 4 sets of 20 min, 2 hours total, 1 set of 90 min"
-            required
           />
-          {errors.otherConcertDuration && (
-            <div className="error">{errors.otherConcertDuration}</div>
-          )}
+          <div>
+            <strong>1 extra set - €500</strong>
+          </div>
         </label>
-      )}
+        <label className="radio-card extra-set-option">
+          <input
+            type="radio"
+            name="extraSets"
+            value="2_extra_sets"
+            checked={fields.extraSets === "2_extra_sets"}
+            onChange={handleChange}
+          />
+          <div>
+            <strong>2 extra sets - €800</strong>
+          </div>
+        </label>
+      </div>
+      <p>
+        <Info className="info-icon" size={16} />
+        For more options ask us on next page's additional notes
+      </p>
 
       {/* Dress Code */}
       <label>
