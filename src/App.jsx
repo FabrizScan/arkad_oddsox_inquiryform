@@ -133,6 +133,7 @@ export default function App() {
       email: formData.email,
       phone: formData.phone,
       notes: formData.notes,
+      marketing_consent: formData.marketingConsent || false,
     };
     return payload;
   }

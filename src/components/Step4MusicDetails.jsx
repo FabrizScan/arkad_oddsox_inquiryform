@@ -123,7 +123,7 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
             onChange={handleChange}
           />
           <div>
-            <strong>1 extra set - €500</strong>
+            <strong>1 x 30 min extra set - €500</strong>
           </div>
         </label>
         <label className="radio-card extra-set-option">
@@ -135,7 +135,7 @@ export default function Step4MusicDetails({ data, onNext, onBack, onUpdate }) {
             onChange={handleChange}
           />
           <div>
-            <strong>2 extra sets - €800</strong>
+            <strong>2 x 30 min extra sets - €800</strong>
           </div>
         </label>
       </div>

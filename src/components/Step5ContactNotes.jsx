@@ -9,13 +9,19 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
     notes: data.notes || "",
     airtableRecordId: data.airtableRecordId || "",
     airtableContactId: data.airtableContactId || "",
+    privacyPolicy: false,
+    marketingConsent: false,
   });
 
   const [errors, setErrors] = useState({});
 
   function handleChange(e) {
-    const { name, value } = e.target;
-    setFields((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setFields((prev) => ({ ...prev, [name]: checked }));
+    } else {
+      setFields((prev) => ({ ...prev, [name]: value }));
+    }
   }
 
   function validate() {
@@ -23,6 +29,7 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
     if (!fields.fullName) e.fullName = "Required";
     if (!fields.email) e.email = "Required";
     else if (!/\S+@\S+\.\S+/.test(fields.email)) e.email = "Invalid email format";
+    if (!fields.privacyPolicy) e.privacyPolicy = "You must accept the Privacy Policy to continue";
     // Phone non è più obbligatorio
     return e;
   }
@@ -102,6 +109,31 @@ export default function Step5ContactNotes({ data, onBack, onSubmit, submitting, 
       </label>
 
       {error && <div className="error">{error}</div>}
+
+      {/* GDPR Consent */}
+      <div className="gdpr-section">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            name="privacyPolicy"
+            checked={fields.privacyPolicy}
+            onChange={handleChange}
+            required
+          />
+          <span>I accept the <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a> <span className="required">*</span></span>
+        </label>
+        {errors.privacyPolicy && <div className="error">{errors.privacyPolicy}</div>}
+        
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            name="marketingConsent"
+            checked={fields.marketingConsent}
+            onChange={handleChange}
+          />
+          <span>I agree to receive promotional emails and newsletters (optional)</span>
+        </label>
+      </div>
 
       {/* Hidden fields for Airtable */}
       <input type="hidden" name="airtableRecordId" value={fields.airtableRecordId} />
