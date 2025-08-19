@@ -14,6 +14,7 @@ import logoImage from "./images/ORANGE_HORIZONTAL.png";
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const SUPABASE_TABLE = "n8n_oddsox_leads_form";
+const N8N_WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL;
 
 const steps = [
   "",
@@ -220,7 +221,7 @@ export default function App() {
   // Funzione per inviare tutti i dati al webhook n8n
   async function sendToN8nWebhook(formData) {
     try {
-      const webhookUrl = 'https://n8n.arkad.agency/webhook/0e93ac30-e2eb-4328-8c95-d1759a956a52';
+      const webhookUrl = N8N_WEBHOOK_URL;
       
       console.log('=== N8N WEBHOOK DEBUG ===');
       console.log('Sending complete data to n8n webhook');
