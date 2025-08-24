@@ -1,0 +1,28 @@
+name = "oddsox-leads-backend"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "oddsox-leads-backend-prod"
+
+[env.staging]
+name = "oddsox-leads-backend-staging"
+
+[[env.production.vars]]
+SUPABASE_URL = ""
+SUPABASE_ANON_KEY = ""
+N8N_WEBHOOK_URL = ""
+
+[[env.staging.vars]]
+SUPABASE_URL = ""
+SUPABASE_ANON_KEY = ""
+N8N_WEBHOOK_URL = ""
+
+# CORS configuration
+[[env.production.rules]]
+type = "ESModule"
+globs = ["**/*.js"]
+
+[[env.staging.rules]]
+type = "ESModule"
+globs = ["**/*.js"]

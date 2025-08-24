@@ -1,26 +1,35 @@
 {
-  "name": "20250705-oddsox-leads-form-draft-",
-  "version": "1.0.0",
-  "description": "This project is a modern, elegant multi-step online form for collecting detailed event booking information for a music band, inspired by the style of [theoddsoxinternational.com](https://www.theoddsoxinternational.com/).",
+  "name": "oddsox-leads-form",
+  "version": "2.0.0",
+  "description": "OddSox Leads Form with separated frontend/backend architecture",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build",
-    "dev": "vite",
-    "preview": "vite preview"
+    "dev": "npm run dev:frontend",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "npm run build:frontend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "preview": "cd frontend && npm run preview",
+    "deploy:frontend": "cd frontend && npm run build",
+    "deploy:backend": "cd backend && npm run deploy",
+    "deploy:backend:staging": "cd backend && npm run deploy:staging",
+    "deploy:backend:production": "cd backend && npm run deploy:production",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
   },
-  "keywords": [],
+  "keywords": [
+    "oddsox",
+    "leads",
+    "form",
+    "react",
+    "cloudflare",
+    "workers"
+  ],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@googlemaps/js-api-loader": "^1.16.10",
-    "@mapbox/search-js-react": "^1.3.0",
-    "lucide-react": "^0.525.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^4.4.9"
-  }
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
 }

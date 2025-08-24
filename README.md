@@ -1,277 +1,176 @@
-# OddSox Event Booking Multi-Step Form
+# OddSox Leads Form
 
-A modern and elegant form for booking musical events with the OddSox band, inspired by the style of [theoddsoxinternational.com](https://www.theoddsoxinternational.com/).
+Form multi-step moderno ed elegante per la raccolta di informazioni dettagliate per prenotazioni di eventi musicali, ispirato allo stile di [theoddsoxinternational.com](https://theoddsoxinternational.com/).
 
-## 🚀 Key Features
+## 🏗️ **Nuova Architettura (v2.0)**
 
-- **Multi-step form** with 5 well-defined phases
-- **Responsive design** and accessible interface
-- **Advanced validation** for required fields
-- **Google Places integration** for location autocomplete
-- **URL parameter pre-filling** system
-- **Supabase integration** for data storage
-- **GDPR compliance** with privacy and marketing consents
-- **Modern UI/UX** with smooth transitions and visual feedback
+Il progetto è stato separato in **frontend** e **backend** per risolvere le criticità di sicurezza:
 
-## 📋 Form Structure
+### **Frontend** (React + Vite)
 
-### **Step 1: Event Info**
+- **Posizione:** `frontend/`
+- **Deploy:** Cloudflare Pages
+- **Caratteristiche:** Nessuna modifica al codice esistente, solo cambio endpoint API
 
-- Event type (wedding, private event, corporate, other)
-- Single date or date range
-- Who is booking (direct client or agency)
+### **Backend** (Cloudflare Workers)
 
-### **Step 2: Location & Venue**
+- **Posizione:** `backend/`
+- **Deploy:** Cloudflare Workers
+- **Funzioni:** Gestione sicura delle chiamate a Supabase e N8N
 
-- Location and address (with Google Places Autocomplete)
-- Environment type (indoor/outdoor/mixed)
-- Google Maps integration for precise coordinates
+## 🔒 **Sicurezza Migliorata**
 
-### **Step 3: Guest Count**
+### **Prima (vulnerabile):**
 
-- Number of guests (predefined categories)
-- Required sound system (automatically calculated based on guests and environment)
+- ❌ Variabili env esposte nel frontend
+- ❌ Chiavi API nel bundle JavaScript
+- ❌ Chiamate dirette a Supabase/N8N dal browser
 
-### **Step 4: Music Details**
+### **Dopo (sicuro):**
 
-- Concert duration (2 sets of 45 min or 3 sets of 30 min)
-- Optional extra sets (1x30 min or 2x30 min)
-- Custom dress code
-- Additional musicians
+- ✅ Variabili env solo nel backend
+- ✅ Chiavi API protette in Cloudflare Workers
+- ✅ Frontend comunica solo con il backend
 
-### **Step 5: Contact & GDPR**
+## 🚀 **Setup e Deploy**
 
-- Contact details (name, email, phone)
-- Additional notes
-- **Privacy Policy consent** (required)
-- **Marketing consent** (optional)
-
-## 🏗️ Project Architecture
-
-```
-/odds-ox-form/
-├── public/
-│   └── index.html
-├── src/
-│   ├── App.jsx                 # Main component and submission logic
-│   ├── main.jsx                # React entry point
-│   ├── components/
-│   │   ├── Step1EventInfo.jsx      # Step 1: Event information
-│   │   ├── Step2LocationVenue.jsx  # Step 2: Location and venue
-│   │   ├── Step3Guests.jsx         # Step 3: Guest count
-│   │   ├── Step4MusicDetails.jsx   # Step 4: Musical details
-│   │   ├── Step5ContactNotes.jsx   # Step 5: Contact and GDPR
-│   │   ├── Stepper.jsx             # Progress indicator
-│   │   └── ErrorBoundary.jsx       # Error handling
-│   ├── styles/
-│   │   ├── variables.css        # CSS variables (colors, fonts, spacing)
-│   │   └── main.css            # Main styles
-│   └── images/
-│       ├── band.jpg            # Band image
-│       └── ORANGE_HORIZONTAL.png # OddSox logo
-├── package.json
-├── vite.config.js
-├── env.example                 # Environment variables template
-└── README.md
-```
-
-## ⚙️ Configuration
-
-### 1. Environment Variables
-
-Copy `env.example` to `.env.local` and configure:
+### **1. Installazione Dependencies**
 
 ```bash
-# Supabase Configuration
-VITE_SUPABASE_URL=https://your-project-id.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
-
-# Google API
-VITE_GOOGLE_API_KEY=your-google-api-key-here
-
-# n8n Webhook
-VITE_N8N_WEBHOOK_URL=https://your-n8n-instance.com/webhook/your-webhook-id
+npm run install:all
 ```
 
-### 2. Supabase Database
-
-Create a table with the following columns:
-
-```sql
-CREATE TABLE n8n_oddsox_leads_form (
-  id BIGSERIAL PRIMARY KEY,
-  record_id TEXT,
-  contact_id TEXT,
-  user_type TEXT,
-  event_type TEXT,
-  date_type TEXT,
-  start_date DATE,
-  end_date DATE,
-  location TEXT,
-  indoor_outdoor TEXT,
-  guests TEXT,
-  dress_code TEXT,
-  concert_duration TEXT,
-  musicians TEXT[],
-  full_name TEXT,
-  email TEXT,
-  phone TEXT,
-  notes TEXT,
-  marketing_consent BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-```
-
-### 3. Google Places API
-
-For location autocomplete, configure the Google Places API key in the `index.html` file.
-
-### 4. n8n Webhook
-
-Configure your n8n webhook URL to receive form submissions:
+### **2. Sviluppo Locale**
 
 ```bash
-VITE_N8N_WEBHOOK_URL=https://your-n8n-instance.com/webhook/your-webhook-id
+# Frontend
+npm run dev:frontend
+
+# Backend (in un altro terminale)
+npm run dev:backend
 ```
 
-**Note**: The n8n webhook is called after successful Supabase submission. If the webhook fails, the form submission is still considered successful (non-blocking).
-
-## 🔗 URL Parameter Pre-filling
-
-The form supports automatic pre-filling through URL parameters:
-
-### Supported Parameters
-
-| Parameter    | Type  | Description             | Example                                                |
-| ------------ | ----- | ----------------------- | ------------------------------------------------------ |
-| `event_type` | text  | Event type              | `wedding`, `private_event`, `corporate_event`, `other` |
-| `location`   | text  | Event location          | `Milan, Italy`                                         |
-| `date_type`  | text  | Date type               | `single` or `range`                                    |
-| `start_date` | date  | Start date (YYYY-MM-DD) | `2025-07-15`                                           |
-| `end_date`   | date  | End date (YYYY-MM-DD)   | `2025-07-16`                                           |
-| `full_name`  | text  | Full name               | `John Smith`                                           |
-| `email`      | email | Contact email           | `john@example.com`                                     |
-
-### Usage Examples
+### **3. Deploy Backend**
 
 ```bash
-# Single event
-https://yourdomain.com/form?event_type=wedding&location=Milan&start_date=2025-07-15
+# Staging
+npm run deploy:backend:staging
 
-# Event with date range
-https://yourdomain.com/form?event_type=corporate_event&date_type=range&start_date=2025-08-01&end_date=2025-08-03
-
-# Event type only
-https://yourdomain.com/form?event_type=private_event
+# Production
+npm run deploy:backend:production
 ```
 
-## 🎨 Customization
-
-### Colors and Theme
-
-Modify `src/styles/variables.css`:
-
-```css
-:root {
-  --odd-sox-orange: #ff6b35;
-  --odd-sox-dark: #2c3e50;
-  --odd-sox-gray: #6c757d;
-  --font-heading: "Your-Font", sans-serif;
-  --font-body: "Your-Font", sans-serif;
-}
-```
-
-### Form Fields
-
-Each step is a separate React component in `src/components/`. Modify fields, validation, and logic according to your needs.
-
-## 🚀 Deployment
-
-### Local Development
+### **4. Deploy Frontend**
 
 ```bash
-npm install
+# Build e deploy su Cloudflare Pages
+npm run deploy:frontend
+```
+
+## ⚙️ **Configurazione**
+
+### **Backend (.env)**
+
+```bash
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-supabase-anon-key
+N8N_WEBHOOK_URL=https://your-n8n-instance.com/webhook/oddsox-leads
+```
+
+### **Frontend (.env)**
+
+```bash
+VITE_GOOGLE_API_KEY=your-google-maps-api-key
+VITE_BACKEND_API_URL=https://your-backend.your-subdomain.workers.dev
+```
+
+## 🌐 **Deploy su Cloudflare**
+
+### **Frontend (Cloudflare Pages)**
+
+1. Connettere il repository GitHub
+2. Build command: `npm run build:frontend`
+3. Build output directory: `frontend/dist`
+4. Environment variables: Solo `VITE_GOOGLE_API_KEY` e `VITE_BACKEND_API_URL`
+
+### **Backend (Cloudflare Workers)**
+
+1. Installare Wrangler CLI: `npm install -g wrangler`
+2. Login: `wrangler login`
+3. Configurare variabili env nel dashboard Cloudflare
+4. Deploy: `npm run deploy:backend:production`
+
+## 📁 **Struttura Progetto**
+
+```
+oddsox-leads-form/
+├── frontend/                 # React app esistente
+│   ├── src/                 # Codice sorgente
+│   ├── package.json         # Dependencies frontend
+│   └── env.example         # Variabili frontend
+├── backend/                 # Cloudflare Workers
+│   ├── src/index.js        # Logica backend
+│   ├── wrangler.toml       # Configurazione Workers
+│   ├── package.json        # Dependencies backend
+│   └── env.example         # Variabili backend
+├── package.json             # Root package.json
+└── README.md               # Questo file
+```
+
+## 🔄 **Flusso Dati**
+
+```
+Frontend → Backend → Supabase + N8N
+   ↓           ↓         ↓
+React App   Workers   Database + Automation
+```
+
+## 🛠️ **Comandi Utili**
+
+```bash
+# Sviluppo completo
 npm run dev
-```
 
-### Production Build
-
-```bash
+# Build completo
 npm run build
-npm run preview
+
+# Deploy completo
+npm run deploy:backend:production
+npm run deploy:frontend
+
+# Solo frontend
+npm run dev:frontend
+npm run build:frontend
+
+# Solo backend
+npm run dev:backend
+npm run deploy:backend:staging
 ```
 
-### Hosting
+## 🔍 **Monitoraggio e Debug**
 
-The project is compatible with:
+### **Frontend**
 
-- Vercel
-- Netlify
-- GitHub Pages
-- Any static hosting
+- Console browser per errori di validazione
+- Network tab per chiamate API
 
-## 🔒 Security and Privacy
+### **Backend**
 
-### GDPR Compliance
+- Cloudflare Workers dashboard per logs
+- Wrangler dev per sviluppo locale
 
-- **Privacy Policy** (required) - Consent for data processing
-- **Marketing Consent** (optional) - Consent for commercial communications
-- Data is only saved after accepting the Privacy Policy
+## 📝 **Note Importanti**
 
-### Validation
+1. **Nessuna modifica al frontend esistente** - solo cambio endpoint
+2. **Variabili env sensibili** sono ora nel backend
+3. **Deploy separato** per frontend e backend
+4. **1 repository GitHub** per entrambi i progetti
+5. **Cloudflare Pages** per frontend e backend
 
-- Client-side validation for all required fields
-- Data sanitization before submission
-- Robust error handling with ErrorBoundary
+## 🆘 **Supporto**
 
-## 📊 Integration with Other Systems
+Per problemi o domande:
 
-### n8n Workflow
-
-The form sends data to both Supabase and your n8n webhook. The n8n webhook receives a clean payload with all form data, including the `marketing_consent` field to distinguish who can receive commercial communications.
-
-**Webhook Flow:**
-
-1. Form data is successfully saved to Supabase
-2. Complete form data is sent to n8n webhook
-3. n8n can process the data for CRM integration, email marketing, etc.
-4. Webhook failures don't block form submission (non-blocking)
-
-### CRM/Email Marketing
-
-```javascript
-// Example integration with Mailchimp
-if (formData.marketing_consent) {
-  // Add to marketing list
-  mailchimp.addToList(email, "marketing");
-} else {
-  // Add only to contacts list
-  mailchimp.addToList(email, "contacts");
-}
-```
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **Form won't submit**: Verify all required fields are filled
-2. **Supabase error**: Check environment variables and table permissions
-3. **Google Places not working**: Verify API key and authorized domains
-
-### Debug
-
-Enable debug logs in browser console to see submission details.
-
-## 🤝 Contributions
-
-For improvements or bug reports, create an issue or pull request.
-
-## 📄 License
-
-This project is developed for OddSox International.
-
----
-
-**Version**: 2.0.0  
-**Last update**: August 2025  
-**Status**: ✅ Complete and functional
+1. Controllare i logs del backend in Cloudflare Workers
+2. Verificare le variabili env nel dashboard Cloudflare
+3. Testare le API con Postman o curl

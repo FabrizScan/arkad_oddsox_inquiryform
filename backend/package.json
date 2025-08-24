@@ -1,0 +1,23 @@
+{
+  "name": "oddsox-leads-backend",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers backend for OddSox Leads Form",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "oddsox",
+    "leads"
+  ],
+  "author": "",
+  "license": "ISC"
+}
