@@ -6,11 +6,10 @@ import Step4MusicDetails from "./components/Step4MusicDetails"; // Nuovo Step 4
 import Step5ContactNotes from "./components/Step5ContactNotes"; // Nuovo Step 5
 import Stepper from "./components/Stepper";
 import { Music, Calendar, MapPin, Users, MessageCircle } from "lucide-react";
+import { apiClient } from "./utils/apiClient";
 import "./styles/main.css";
 import logoImage from "./images/ORANGE_HORIZONTAL.png";
 
-// Backend API configuration
-const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
 const steps = [
   "",
@@ -158,31 +157,9 @@ export default function App() {
       }
 
       console.log("Final payload:", payload);
-      console.log("Backend API URL:", BACKEND_API_URL);
 
-      if (!BACKEND_API_URL) {
-        throw new Error('Backend API URL not configured');
-      }
-
-      // Send to backend (which handles Supabase and N8N)
-      const res = await fetch(BACKEND_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload),
-      });
-
-      console.log("Response status:", res.status);
-      console.log("Response ok:", res.ok);
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.log("Error response text:", errorText);
-        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-      }
-
-      const result = await res.json();
+      // Use the API client for backend communication
+      const result = await apiClient.submitForm(payload);
       console.log("Success response:", result);
 
       setSubmitted(true);

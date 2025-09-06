@@ -1,0 +1,20 @@
+name = "oddsox-leads-frontend"
+compatibility_date = "2024-01-01"
+
+# Service bindings per Cloudflare Pages
+[[services]]
+binding = "BACKEND_WORKER"
+service = "oddsox-inquiry-form-backend"  # Nome del worker backend in produzione
+environment = "production"
+
+[env.staging.services]
+[[env.staging.services]]
+binding = "BACKEND_WORKER"
+service = "oddsox-inquiry-form-backend-staging"
+environment = "staging"
+
+# Build configuration
+[build]
+command = "npm run build"
+cwd = "."
+watch_dir = "src"

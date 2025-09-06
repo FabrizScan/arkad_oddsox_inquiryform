@@ -16,6 +16,8 @@
     "deploy:backend": "cd backend && npm run deploy",
     "deploy:backend:staging": "cd backend && npm run deploy:staging",
     "deploy:backend:production": "cd backend && npm run deploy:production",
+    "deploy:cloudflare": "npm run deploy:backend:production && cd frontend && npm run build",
+    "deploy:vercel": "npm run deploy:backend:production && npm run build:frontend",
     "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
   },
   "keywords": [
