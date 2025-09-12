@@ -805,6 +805,21 @@ input[type="radio"] {
   box-shadow: 0 4px 16px rgba(255, 107, 53, 0.13);
 }
 
+.success-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.success-buttons .button-primary {
+  background: var(--odd-sox-orange);
+}
+
+.success-buttons .button-secondary {
+  background: var(--odd-sox-gray);
+}
+
 /* Responsive adjustments for page */
 @media (max-width: 768px) {
   .page-container {
