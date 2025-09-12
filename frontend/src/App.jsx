@@ -232,17 +232,27 @@ export default function App() {
         <div className="submission-success">
           <h2>Thank You!</h2>
           <p>Your event details have been successfully submitted. We'll be in touch soon!</p>
-          <button
-            onClick={() => {
-              setSubmitted(false);
-              setCurrentStep(0); // Torna allo step 1
-              setFormData({}); // Resetta tutti i dati
-              setError(null);
-            }}
-            className="button"
-          >
-            Submit another form
-          </button>
+          <div className="success-buttons">
+            <button
+              onClick={() => {
+                window.open('https://www.theoddsoxinternational.com/', '_blank');
+              }}
+              className="button button-primary"
+            >
+              Back to Website
+            </button>
+            <button
+              onClick={() => {
+                setSubmitted(false);
+                setCurrentStep(0); // Torna allo step 1
+                setFormData({}); // Resetta tutti i dati
+                setError(null);
+              }}
+              className="button button-secondary"
+            >
+              Submit another form
+            </button>
+          </div>
         </div>
       ) : (
         <>
