@@ -8,21 +8,5 @@ name = "oddsox-leads-backend-prod"
 [env.staging]
 name = "oddsox-leads-backend-staging"
 
-[[env.production.vars]]
-SUPABASE_URL = ""
-SUPABASE_ANON_KEY = ""
-N8N_WEBHOOK_URL = ""
-
-[[env.staging.vars]]
-SUPABASE_URL = ""
-SUPABASE_ANON_KEY = ""
-N8N_WEBHOOK_URL = ""
-
-# CORS configuration
-[[env.production.rules]]
-type = "ESModule"
-globs = ["**/*.js"]
-
-[[env.staging.rules]]
-type = "ESModule"
-globs = ["**/*.js"]
+# Variables are set via wrangler secret or Cloudflare dashboard
+# Do not hardcode secrets here!
