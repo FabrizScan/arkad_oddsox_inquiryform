@@ -24,6 +24,12 @@ export class ApiClient {
 
   // Invia richiesta al backend usando il metodo appropriato
   async submitForm(payload) {
+    console.log('🔍 API Client Debug:', {
+      isCloudflarePages: this.isCloudflarePages,
+      backendUrl: this.backendUrl,
+      method: this.isCloudflarePages ? 'Service Binding' : 'HTTP URL'
+    });
+
     if (this.isCloudflarePages) {
       return this.submitWithBinding(payload);
     } else {
@@ -84,9 +90,13 @@ export class ApiClient {
 
   // Metodo tradizionale con URL (per Vercel e fallback)
   async submitWithUrl(payload) {
+    console.log('📡 submitWithUrl - Starting HTTP request to:', this.backendUrl);
+
     if (!this.backendUrl) {
       throw new Error('Backend API URL not configured');
     }
+
+    console.log('📤 Sending POST request with payload:', payload);
 
     const response = await fetch(this.backendUrl, {
       method: 'POST',
@@ -96,12 +106,17 @@ export class ApiClient {
       body: JSON.stringify(payload)
     });
 
+    console.log('📥 Response received:', response.status, response.statusText);
+
     if (!response.ok) {
       const errorText = await response.text();
+      console.error('❌ Backend error response:', errorText);
       throw new Error(`Backend error: HTTP ${response.status}: ${errorText}`);
     }
 
-    return await response.json();
+    const jsonResponse = await response.json();
+    console.log('✅ Success response:', jsonResponse);
+    return jsonResponse;
   }
 }
 

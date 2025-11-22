@@ -122,7 +122,8 @@ async function sendToN8n(formData, env) {
     ...formData,
     soundSystemRequired: formData.soundSystemRequired || false,
     submitted_at: new Date().toISOString(),
-    source: 'oddsox-leads-form'
+    form_source: 'oddsox-leads-form',
+    traffic_source: formData.source || 'direct' // Add traffic source tracking
   };
 
   const response = await fetch(N8N_WEBHOOK_URL, {

@@ -5,7 +5,7 @@ import Step3Guests from "./components/Step3Guests"; // Nuovo Step 3
 import Step4MusicDetails from "./components/Step4MusicDetails"; // Nuovo Step 4
 import Step5ContactNotes from "./components/Step5ContactNotes"; // Nuovo Step 5
 import Stepper from "./components/Stepper";
-import { Music, Calendar, MapPin, Users, MessageCircle } from "lucide-react";
+import { Zap, Sparkles } from "lucide-react";
 import { apiClient } from "./utils/apiClient";
 import "./styles/main.css";
 import logoImage from "./images/ORANGE_HORIZONTAL.png";
@@ -22,6 +22,36 @@ const steps = [
 // Funzione per leggere i parametri URL
 function getUrlParams() {
   const urlParams = new URLSearchParams(window.location.search);
+
+  // Determine source with priority: utm_source > social > referrer
+  let source = '';
+  const utmSource = urlParams.get('utm_source');
+  const socialParam = urlParams.get('social');
+
+  if (utmSource) {
+    // Use UTM source if available (industry standard)
+    source = utmSource;
+    const utmMedium = urlParams.get('utm_medium');
+    const utmCampaign = urlParams.get('utm_campaign');
+
+    // Append additional UTM parameters if available
+    if (utmMedium) source += `/${utmMedium}`;
+    if (utmCampaign) source += `/${utmCampaign}`;
+  } else if (socialParam) {
+    // Fallback to custom 'social' parameter
+    source = socialParam;
+  } else if (document.referrer) {
+    // Fallback to referrer if no params provided
+    try {
+      const referrerUrl = new URL(document.referrer);
+      source = `referrer:${referrerUrl.hostname}`;
+    } catch (e) {
+      source = 'direct';
+    }
+  } else {
+    source = 'direct';
+  }
+
   return {
     eventType: urlParams.get('event_type') || '',
     location: urlParams.get('location') || '',
@@ -32,6 +62,7 @@ function getUrlParams() {
     email: urlParams.get('email') || '',
     airtableRecordId: urlParams.get('airtable_record_id') || '',
     airtableContactId: urlParams.get('airtable_contact_id') || '',
+    source: source, // Add source tracking
   };
 }
 
@@ -45,37 +76,36 @@ export default function App() {
   // Precompila il form con i parametri URL al caricamento
   useEffect(() => {
     const urlParams = getUrlParams();
-    if (urlParams.eventType || urlParams.location || urlParams.startDate || urlParams.fullName || urlParams.email) {
-      // Gestione event_type personalizzato
-      let eventType = urlParams.eventType;
-      let otherEventType = '';
 
-      // Se l'event_type non è nelle opzioni predefinite, imposta "other"
-      const validEventTypes = ['wedding', 'private_event', 'corporate_event', 'other'];
-      if (eventType && !validEventTypes.includes(eventType)) {
-        otherEventType = eventType; // Salva il valore originale
-        eventType = 'other'; // Imposta come "other"
-      }
+    // Gestione event_type personalizzato
+    let eventType = urlParams.eventType;
+    let otherEventType = '';
 
-      const prefillData = {
-        eventType: eventType,
-        otherEventType: otherEventType,
-        location: urlParams.location,
-        isDateRange: urlParams.dateType === 'range',
-        startDate: urlParams.startDate,
-        endDate: urlParams.endDate,
-        fullName: urlParams.fullName,
-        email: urlParams.email,
-        airtableRecordId: urlParams.airtableRecordId,
-        airtableContactId: urlParams.airtableContactId,
-      };
-      setFormData(prefillData);
-      
-      // Rimuovo il salto automatico allo step finale
-      // L'utente parte sempre dallo step 1
-      
-      console.log('Form precompilato con parametri URL:', prefillData);
+    // Se l'event_type non è nelle opzioni predefinite, imposta "other"
+    const validEventTypes = ['wedding', 'private_event', 'corporate_event', 'other'];
+    if (eventType && !validEventTypes.includes(eventType)) {
+      otherEventType = eventType; // Salva il valore originale
+      eventType = 'other'; // Imposta come "other"
     }
+
+    const prefillData = {
+      eventType: eventType,
+      otherEventType: otherEventType,
+      location: urlParams.location,
+      isDateRange: urlParams.dateType === 'range',
+      startDate: urlParams.startDate,
+      endDate: urlParams.endDate,
+      fullName: urlParams.fullName,
+      email: urlParams.email,
+      airtableRecordId: urlParams.airtableRecordId,
+      airtableContactId: urlParams.airtableContactId,
+      source: urlParams.source, // ALWAYS save source tracking
+    };
+
+    setFormData(prefillData);
+
+    console.log('📊 Form initialized with URL params:', prefillData);
+    console.log('🎯 Traffic source detected:', urlParams.source);
   }, []);
 
   // Aggiorna i dati del form per lo step corrente
@@ -111,17 +141,17 @@ export default function App() {
       concert_duration: (() => {
         let baseDuration = formData.concertDurationType;
         let extraSets = formData.extraSets || "";
-        
+
         if (!extraSets) {
           return baseDuration;
         }
-        
+
         if (extraSets === '1_extra_set') {
           return baseDuration + ' + 1 extra set';
         } else if (extraSets === '2_extra_sets') {
           return baseDuration + ' + 2 extra sets';
         }
-        
+
         return baseDuration;
       })(),
       musicians: formData.musicians || [],
@@ -130,6 +160,7 @@ export default function App() {
       phone: formData.phone,
       notes: formData.notes,
       marketing_consent: formData.marketingConsent || false,
+      source: formData.source || 'direct', // Add source tracking
     };
     return payload;
   }
@@ -279,6 +310,26 @@ export default function App() {
           </div>
         </>
       )}
+
+      {/* Footer - powered by arkad.agency */}
+      <footer className="arkad-footer">
+        <div className="arkad-footer-content">
+          <Sparkles className="arkad-icon" size={20} />
+          <span className="arkad-text">
+            Powered by{' '}
+            <a
+              href="https://arkad.agency"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="arkad-link"
+            >
+              arkad.agency
+            </a>
+          </span>
+          <Zap className="arkad-icon" size={20} />
+        </div>
+        <p className="arkad-tagline">Tailored automation. Intelligent results.</p>
+      </footer>
     </div>
   );
 }

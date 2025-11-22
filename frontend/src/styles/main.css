@@ -1385,4 +1385,135 @@ input[type="date"],
   min-width: 180px;
   text-align: left; /* Align text to left */
   padding: 0.75rem 1rem; /* Reduced padding for smaller height */
-} 
+}
+
+/* Arkad.agency Footer */
+.arkad-footer {
+  text-align: center;
+  padding: 2rem 1rem 1.5rem;
+  margin-top: 3rem;
+  border-top: 1px solid #e9ecef;
+  background: transparent;
+}
+
+.arkad-footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.arkad-icon {
+  color: var(--odd-sox-orange);
+  opacity: 0.8;
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+.arkad-icon:first-child {
+  animation-delay: 0s;
+}
+
+.arkad-icon:last-child {
+  animation-delay: 1.5s;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.arkad-text {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--odd-sox-gray);
+  font-weight: 500;
+}
+
+.arkad-link {
+  color: var(--odd-sox-orange);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.arkad-link:hover {
+  color: #e55a2b;
+  text-decoration: none;
+}
+
+.arkad-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--odd-sox-orange);
+  transition: width 0.3s ease;
+}
+
+.arkad-link:hover::after {
+  width: 100%;
+}
+
+.arkad-tagline {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-style: italic;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Responsive footer */
+@media (max-width: 768px) {
+  .arkad-footer {
+    padding: 1.5rem 0.5rem 1rem;
+    margin-top: 2rem;
+  }
+
+  .arkad-footer-content {
+    gap: 0.5rem;
+  }
+
+  .arkad-text {
+    font-size: 0.875rem;
+  }
+
+  .arkad-tagline {
+    font-size: 0.8rem;
+  }
+
+  .arkad-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .arkad-footer {
+    padding: 1rem 0.25rem 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .arkad-text {
+    font-size: 0.8rem;
+  }
+
+  .arkad-tagline {
+    font-size: 0.75rem;
+  }
+
+  .arkad-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
